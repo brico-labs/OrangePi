@@ -65,7 +65,7 @@ Con eso averiguamos la IP asignada a la *Orange Pi Zero* y ya podemos hacer logi
 
 ¡Y ya estamos!
 
-![Primer login en *Orange Pi*](doc/src/img/OrangePiZero_FirstLogin.png)
+![Primer login en *Orange Pi*](src/img/OrangePiZero_FirstLogin.png)
 
 Lo primero es poner al dia el sistema:
 
@@ -118,7 +118,7 @@ Para configurar el wifi echamos un ojo al fichero `/etc/network/interfaces` pero
 
 Así que basta con ejecutar `sudo nwtui` y ya podemos dar de alta nuestra wifi (yo la prefiero con IP estática).
 
-![Configuración WIFI](doc/src/img/OrangePiZero_tmtui.png)
+![Configuración WIFI](src/img/OrangePiZero_tmtui.png)
 
 Ejecutamos `ifconfig` y ya vemos nuestro nuevo interface configurado:
 
@@ -145,6 +145,8 @@ Referencias
 -   <https://docs.armbian.com/Hardware_Allwinner/>
 -   [GPIO](https://linux-sunxi.org/GPIO) Una explicación de como acceder al gpio desde terminal
 -   [Info variada](https://linux-sunxi.org/Orange_Pi_Zero) Aquí tenemos el esquema de pines
+-   [GPIO desde el espacio de usurario](https://forum.armbian.com/index.php/topic/1886-gpio-access-from-user-space/)
+-   [sunxi-gpio](https://forum.armbian.com/index.php/topic/1471-solved-difficulty-accessing-gpio-via-the-sunxi-gpio-export-interface/)
 
 META
 ====
