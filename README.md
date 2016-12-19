@@ -133,6 +133,115 @@ Ejecutamos `ifconfig` y ya vemos nuestro nuevo interface configurado:
               collisions:0 txqueuelen:1000
               RX bytes:328 (328.0 B)  TX bytes:852 (852.0 B)
 
+Orange Pi Zero, características técnicas
+========================================
+
+La tarjeta de desarrollo Orange Pi Zero viene equipada con un procesador Cortex A7 Allwinner H2+ quad core, con 256 o 512MB RAM, Ethernet, y puertos USB. Disponible en Aliexpress (tienda oficial) por 6.99 dolares, mas 3.39 dolares como gastos de envío.
+
+Especificaciones
+----------------
+
+-   SoC – Allwinner H2(+) quad core Cortex A7 processor @ 1.2 GHz with Mali-400MP2 GPU @ 600 MHz
+-   System Memory – 256 to 512 MB DDR3-1866 SDRAM
+-   Storage – micro SD card slot
+-   Connectivity – 10/100M Ethernet + 802.11 b/g/n WiFi (Allwinner XR819 WiFi module) with u.FL antenna connector and external antenna
+-   USB – 1x USB 2.0 host ports, 1x micro USB OTG port
+-   Expansion headers – Unpopulated 26-pin “Raspberry Pi B+” header + 13-pin header with headphone, 2x USB 2.0, TV out, microphone and IR receiver signals
+-   Debugging – Unpopulated 3-pin header for serial console
+-   Misc – 2x LEDs
+-   Power Supply – 5V via micro USB port or optional PoE
+-   Dimensions – 52 x 46 mm
+-   Weight – 26 grams
+
+Esquema de pines
+----------------
+
+Un excelente esquema de pines puede conseguirse en [OSHLab](https://oshlab.com/orange-pi-zero-pinout/)
+
+![Pineado Orange Pi](src/img/Orange-Pi-Zero-Pinout.jpg)
+
+Esquemas eléctricos
+-------------------
+
+Pueden bajarse de [aquí](http://harald.studiokubota.com/wordpress/wp-content/uploads/2016/11/Orange-Pi-Zero-Schanetics-v1_11.pdf)
+
+Accediendo al hardware desde linea de comandos
+==============================================
+
+La memoria es más que suficiente para correr programas. El Armbian consume únicamente 40Mb en funcionamiento.
+
+    root@orangepizero:~# free
+                 total       used       free     shared    buffers     cached
+    Mem:        247068     122300     124768       4620       7908      69548
+    -/+ buffers/cache:      44844     202224
+    Swap:       131068          0     131068
+
+Vamos a hacer algunas pruebas con el hardware. En Armbian, como todo Unix que se precie, todo es un fichero.
+
+En el directorio `/sys/class` encontraremos cosas interesantes:
+
+    root@orangepizero:~# ls /sys/class
+    backlight  cuse     graphics     i2c-dev    mdio_bus  power_supply  script   spidev      thermal     video4linux
+    bdi    devfreq  hdmi     ieee80211  mem       ppp       scsi_device  spi_master  tty         vtconsole
+    block      disp     hidraw   input      misc      rc        scsi_disk    sunxi_cma_test  udc
+    bsg    dma      hwmon    leds       mmc_host  rfkill        scsi_host    sunxi_dump  usb_device
+    cedar_dev  gpio     i2c-adapter  lirc       net       rtc       sound    sunxi_info  vc
+
+LEDs
+----
+
+Si miramos dentro del directorio `leds` veremos que hay un directorio que representa cada uno de los leds de la placa:
+
+    root@orangepizero:~# cd /sys/class/leds/
+    root@orangepizero:/sys/class/leds# ls
+    green_led  red_led
+
+Podemos ver, por ejemplo, a que evento está asociado cada led ejecutando `cat green_led/trigger` (tiene el valor `default_on`) o `cat red_led/trigger` (tiene el valor `none`).
+
+    root@orangepizero:/sys/class/leds# cat green_led/trigger 
+    none mmc0 mmc1 timer heartbeat backlight [default-on] rfkill0 phy1rx phy1tx phy1assoc phy1radio 
+    root@orangepizero:/sys/class/leds# cat red_led/trigger 
+    [none] mmc0 mmc1 timer heartbeat backlight default-on rfkill0 phy1rx phy1tx phy1assoc phy1radio 
+
+O podemos encender el led rojo ejecutando `echo 1 > red_led/brightness`, y para apagarlo ya os podéis imaginar que es `echo 0 > red_led/brightness`.
+
+GPIO
+----
+
+Podemos ver los GPIO disponibles ejecutando:
+
+    root@orangepizero:~# cat /sys/kernel/debug/gpio
+    GPIOs 0-383, platform/sunxi-pinctrl, sunxi-pinctrl:
+     gpio-10  (?                   ) out hi
+     gpio-17  (red_led             ) out lo
+     gpio-202 (xradio_irq          ) in  lo
+     gpio-354 (?                   ) out hi
+     gpio-362 (green_led           ) out hi
+
+Podemos activar un nuevo puerto GPIO, digamos el 15:
+
+    root@orangepizero:~# echo 15 >/sys/class/gpio/export
+
+Ahora veremos el puerto activo:
+
+    root@orangepizero:~# cat /sys/kernel/debug/gpio 
+    GPIOs 0-383, platform/sunxi-pinctrl, sunxi-pinctrl:
+     gpio-10  (?                   ) out hi
+     gpio-15  (sysfs               ) in  lo
+     gpio-17  (red_led             ) out lo
+     gpio-202 (xradio_irq          ) in  lo
+     gpio-354 (?                   ) out hi
+     gpio-362 (green_led           ) out hi
+
+En el directorio `/sys/class/gpio/gpio15/` tendremos los interfaces usuales para puertos gpio definidos en el kernel de linux.
+
+Referencias
+-----------
+
+-   [Probando la Orange Pi Zero](http://harald.studiokubota.com/wordpress/index.php/2016/11/19/orange-pi-zero-neat/)
+-   [GPIO from commandline](http://falsinsoft.blogspot.com.es/2012/11/access-gpio-from-linux-user-space.html)
+-   [mas de lo mismo](http://www.emcraft.com/stm32f429discovery/controlling-gpio-from-linux-user-space)
+
 Referencias
 ===========
 
@@ -145,8 +254,9 @@ Referencias
 -   <https://docs.armbian.com/Hardware_Allwinner/>
 -   [GPIO](https://linux-sunxi.org/GPIO) Una explicación de como acceder al gpio desde terminal
 -   [Info variada](https://linux-sunxi.org/Orange_Pi_Zero) Aquí tenemos el esquema de pines
--   [GPIO desde el espacio de usurario](https://forum.armbian.com/index.php/topic/1886-gpio-access-from-user-space/)
+-   [GPIO desde el espacio de usuario](https://forum.armbian.com/index.php/topic/1886-gpio-access-from-user-space/)
 -   [sunxi-gpio](https://forum.armbian.com/index.php/topic/1471-solved-difficulty-accessing-gpio-via-the-sunxi-gpio-export-interface/)
+-   [orange pi español](http://orangepiweb.es/index.php)
 
 META
 ====
@@ -183,7 +293,7 @@ $ make odt
 ```
 
 Requisitos
-==========
+----------
 
 Necesitas tener instalaco **Pandoc**, hay [una pequeña introducción](https://github.com/brico-labs/pandoc_basico) en el el github de BricoLabs.
 

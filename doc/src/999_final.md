@@ -43,7 +43,7 @@ $ make reset
 $ make odt
 ~~~~
 
-# Requisitos
+## Requisitos
 
 Necesitas tener instalaco __Pandoc__,
 hay
