@@ -51,7 +51,8 @@ Volvemos a insertar la SD en la ''Orange Pi'' y la conectamos con un cable ether
 Como mi cutre-router no me da información de las IP asignadas usamos ''nmap'':
 
 <pre>nmap -sP 192.168.0.0 /24</pre>
-Con eso averiguamos la IP asignada a la ''Orange Pi Zero'' y ya podemos hacer login con:
+Con eso averiguamos la IP asignada a la ''Orange Pi Zero'' y ya podemos hacer login con el siguiente comando <ref>La password por defecto de Armbian es '''1234''', nos pedirá cambiarla en el primer login.
+</ref>:
 
 <pre>ssh root@192.168.0.109</pre>
 ¡Y ya estamos!
@@ -686,3 +687,4 @@ public licenses.
 
 Creative Commons may be contacted at creativecommons.org.
 </pre>
+<references />

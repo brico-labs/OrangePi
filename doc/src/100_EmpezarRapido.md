@@ -95,7 +95,8 @@ nmap -sP 192.168.0.0 /24
 ~~~~
 
 Con eso averiguamos la IP asignada a la _Orange Pi Zero_ y ya podemos
-hacer login con:
+hacer login con el siguiente comando ^[La password por defecto de
+Armbian es __1234__, nos pedirá cambiarla en el primer login.]:
 
 ~~~~
 ssh root@192.168.0.109

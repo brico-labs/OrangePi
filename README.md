@@ -59,13 +59,13 @@ Como mi cutre-router no me da información de las IP asignadas usamos *nmap*:
 
     nmap -sP 192.168.0.0 /24
 
-Con eso averiguamos la IP asignada a la *Orange Pi Zero* y ya podemos hacer login con:
+Con eso averiguamos la IP asignada a la *Orange Pi Zero* y ya podemos hacer login con el siguiente comando [1]:
 
     ssh root@192.168.0.109
 
 ¡Y ya estamos!
 
-![Primer login en *Orange Pi*](doc//src/img/OrangePiZero_FirstLogin.png)
+![Primer login en *Orange Pi*](doc/src/img/OrangePiZero_FirstLogin.png)
 
 Lo primero es poner al dia el sistema:
 
@@ -118,7 +118,7 @@ Para configurar el wifi echamos un ojo al fichero `/etc/network/interfaces` pero
 
 Así que basta con ejecutar `sudo nwtui` y ya podemos dar de alta nuestra wifi (yo la prefiero con IP estática).
 
-![Configuración WIFI](doc//src/img/OrangePiZero_tmtui.png)
+![Configuración WIFI](doc/src/img/OrangePiZero_tmtui.png)
 
 Ejecutamos `ifconfig` y ya vemos nuestro nuevo interface configurado:
 
@@ -158,7 +158,7 @@ Esquema de pines
 
 Un excelente esquema de pines puede conseguirse en [OSHLab](https://oshlab.com/orange-pi-zero-pinout/)
 
-![Pineado Orange Pi](doc//src/img/Orange-Pi-Zero-Pinout.jpg)
+![Pineado Orange Pi](doc/src/img/Orange-Pi-Zero-Pinout.jpg)
 
 Esquemas eléctricos
 -------------------
@@ -729,3 +729,4 @@ Licencia
 
     Creative Commons may be contacted at creativecommons.org.
 
+[1] La password por defecto de Armbian es **1234**, nos pedirá cambiarla en el primer login.
