@@ -112,6 +112,8 @@ pip install --upgrade virtualenv
 
 Despues de eso ya he podido usar _virtualenv_ sin problemas.
 
+
+
 ## Referencias
 
 * [Probando la Orange Pi Zero](http://harald.studiokubota.com/wordpress/index.php/2016/11/19/orange-pi-zero-neat/)

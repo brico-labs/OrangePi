@@ -65,7 +65,7 @@ Con eso averiguamos la IP asignada a la *Orange Pi Zero* y ya podemos hacer logi
 
 ¡Y ya estamos!
 
-![Primer login en *Orange Pi*](doc/src/img/OrangePiZero_FirstLogin.png)
+![Primer login en *Orange Pi*](src/img/OrangePiZero_FirstLogin.png)
 
 Lo primero es poner al dia el sistema:
 
@@ -118,7 +118,7 @@ Para configurar el wifi echamos un ojo al fichero `/etc/network/interfaces` pero
 
 Así que basta con ejecutar `sudo nwtui` y ya podemos dar de alta nuestra wifi (yo la prefiero con IP estática).
 
-![Configuración WIFI](doc/src/img/OrangePiZero_tmtui.png)
+![Configuración WIFI](src/img/OrangePiZero_tmtui.png)
 
 Ejecutamos `ifconfig` y ya vemos nuestro nuevo interface configurado:
 
@@ -158,7 +158,7 @@ Esquema de pines
 
 Un excelente esquema de pines puede conseguirse en [OSHLab](https://oshlab.com/orange-pi-zero-pinout/)
 
-![Pineado Orange Pi](doc/src/img/Orange-Pi-Zero-Pinout.jpg)
+![Pineado Orange Pi](src/img/Orange-Pi-Zero-Pinout.jpg)
 
 Esquemas eléctricos
 -------------------
@@ -296,7 +296,7 @@ También podemos instalar RPi-Monitor con el comando:
 
 Una vez instalado podemos visitar desde nuestro navegador la dirección ip de nuestra OPI Zero *http://opi-adress:8888* para ver las estadísticas.
 
-![Estadísticas en RPi-Monitor](doc/src/img/rpimonitor.png)
+![Estadísticas en RPi-Monitor](src/img/rpimonitor.png)
 
 ¡Ojo! Las gráficas no se refrescan automáticamente hay que recargar la página.
 
