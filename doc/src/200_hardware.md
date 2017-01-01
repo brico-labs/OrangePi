@@ -34,3 +34,5 @@ en [OSHLab](https://oshlab.com/orange-pi-zero-pinout/)
 
 Pueden bajarse de [aquí](http://harald.studiokubota.com/wordpress/wp-content/uploads/2016/11/Orange-Pi-Zero-Schanetics-v1_11.pdf)
 
+
+

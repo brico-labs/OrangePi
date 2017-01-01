@@ -89,7 +89,9 @@ usuales para puertos gpio definidos en el kernel de linux.
 
 # Bibliotecas útiles
 
-# Python
+## Python
+
+### Instalación de virtualenv 
 
 Para probar bibliotecas de Python instalamos:
 
@@ -98,6 +100,17 @@ sudo aptitude install python-pip
 sudo aptitude install python-virtualenv
 sudo aptitude install python-dev
 ~~~~
+
+El caso es que el virtualenv no me funciona después de ejecutar estos
+pasos. Finalmente he tenido que ejecutar, como _root_, los siguientes
+comandos:
+
+~~~~
+pip install --upgrade pip
+pip install --upgrade virtualenv
+~~~~
+
+Despues de eso ya he podido usar _virtualenv_ sin problemas.
 
 ## Referencias
 
