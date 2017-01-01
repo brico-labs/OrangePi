@@ -87,6 +87,17 @@ GPIOs 0-383, platform/sunxi-pinctrl, sunxi-pinctrl:
 En el directorio `/sys/class/gpio/gpio15/` tendremos los interfaces
 usuales para puertos gpio definidos en el kernel de linux.
 
+# Bibliotecas útiles
+
+# Python
+
+Para probar bibliotecas de Python instalamos:
+
+~~~~{bash}
+sudo aptitude install python-pip
+sudo aptitude install python-virtualenv
+sudo aptitude install python-dev
+~~~~
 
 ## Referencias
 

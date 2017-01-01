@@ -15,3 +15,10 @@
 * [GPIO desde el espacio de usuario](https://forum.armbian.com/index.php/topic/1886-gpio-access-from-user-space/)
 * [sunxi-gpio](https://forum.armbian.com/index.php/topic/1471-solved-difficulty-accessing-gpio-via-the-sunxi-gpio-export-interface/)
 * [orange pi español](http://orangepiweb.es/index.php)
+* [ArchLinux ARM on Orange Pi](https://www.amedeobaragiola.me/blog/2016/06/04/archlinux-arm-on-orange-pi-one/)
+* [Lakka Nightly Builds](http://mirror.lakka.tv/nightly/) Lakka is the
+  official Linux distribution of RetroArch and the libretro ecosystem.
+  Each game system is implemented as a libretro core, while the
+  frontend RetroArch takes care of inputs and display. This clear
+  separation ensures modularity and centralized configuration.  Also
+  nightly build for H3 is supported
