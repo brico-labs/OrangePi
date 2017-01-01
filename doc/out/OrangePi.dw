@@ -1,234 +1,90 @@
-\documentclass[12pt,spanish,]{scrartcl}
-\usepackage{lmodern}
-\usepackage{amssymb,amsmath}
-\usepackage{ifxetex,ifluatex}
-\usepackage{fixltx2e} % provides \textsubscript
-\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
-  \usepackage[T1]{fontenc}
-  \usepackage[utf8]{inputenc}
-\else % if luatex or xelatex
-  \ifxetex
-    \usepackage{mathspec}
-  \else
-    \usepackage{fontspec}
-  \fi
-  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
-    \setmainfont[]{Ubuntu}
-    \setmonofont[Mapping=tex-ansi]{Ubuntu Mono}
-\fi
-% use upquote if available, for straight quotes in verbatim environments
-\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-% use microtype if available
-\IfFileExists{microtype.sty}{%
-\usepackage{microtype}
-\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
-}{}
-\usepackage[a4paper]{geometry}
-\usepackage[unicode=true]{hyperref}
-\PassOptionsToPackage{usenames,dvipsnames}{color} % color is loaded by hyperref
-\hypersetup{
-            pdftitle={Probando la Orange Pi},
-            pdfauthor={Luis Llamas lfllamas93@gmail.com; Sergio Alvariño sergio.alvarino@vodafone.com},
-            colorlinks=true,
-            linkcolor=Maroon,
-            citecolor=Blue,
-            urlcolor=Blue,
-            breaklinks=true}
-\urlstyle{same}  % don't use monospace font for urls
-\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
-  \usepackage[shorthands=off,main=spanish]{babel}
-\else
-  \usepackage{polyglossia}
-  \setmainlanguage[]{spanish}
-\fi
-\usepackage{graphicx,grffile}
-\makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
-\makeatother
-% Scale images if necessary, so that they will not overflow the page
-% margins by default, and it is still possible to overwrite the defaults
-% using explicit options in \includegraphics[width, height, ...]{}
-\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-\IfFileExists{parskip.sty}{%
-\usepackage{parskip}
-}{% else
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt plus 2pt minus 1pt}
-}
-\setlength{\emergencystretch}{3em}  % prevent overfull lines
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{5}
-% Redefines (sub)paragraphs to behave more like sections
-\ifx\paragraph\undefined\else
-\let\oldparagraph\paragraph
-\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
-\fi
-\ifx\subparagraph\undefined\else
-\let\oldsubparagraph\subparagraph
-\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
-\fi
+====== Empezar rápido desde linux ======
 
-\title{Probando la Orange Pi}
-\providecommand{\subtitle}[1]{}
-\subtitle{Un proyecto de BricoLabs}
-\author{Luis Llamas
-\href{mailto:lfllamas93@gmail.com}{\nolinkurl{lfllamas93@gmail.com}} \and Sergio Alvariño
-\href{mailto:sergio.alvarino@vodafone.com}{\nolinkurl{sergio.alvarino@vodafone.com}}}
-\providecommand{\institute}[1]{}
-\institute{BricoLabs}
-\date{diciembre-2016}
+Para usar la Orange Pi Zero tendremos que crear imágenes arrancables en tarjetas micro SD.
 
-\begin{document}
-\maketitle
-\begin{abstract}
-Probando la Orange Pi y aprendiendo a usarla.
+===== Crear una SD arrancable =====
 
-TRABAJO EN CURSO NO TERMINADO
-\end{abstract}
+Dependiendo de donde conectemos la tarjeta tendremos que usar diferentes rutas. En el procedimiento descrito a continuación ''%%${card}%%'' será la ruta al dispositivo de la tarjeta y ${p} la partición (si la hay).
 
-{
-\hypersetup{linkcolor=black}
-\setcounter{tocdepth}{3}
-\tableofcontents
-}
-\section{Empezar rápido desde
-linux}\label{empezar-ruxe1pido-desde-linux}
+Si la tarjeta se conecta via adaptador USB, linux la va a asociar a un dispositivo /dev/sdx, por ejemplo en mi portátil el disco duro es ''%%/dev/sda%%'' las distintas particiones serán ''%%/dev/sda1%%'', ''%%/devb/sda2%%'', etc.
 
-Para usar la Orange Pi Zero tendremos que crear imágenes arrancables en
-tarjetas micro SD.
+Si conectamos una memoria con un adaptador USB linux la podría mapear en ''%%/dev/sdb%%'' por ejemplo.
 
-\subsection{Crear una SD arrancable}\label{crear-una-sd-arrancable}
+Si la memoria se conecta mediante una ranura SD, linux la asociará a un dispositivo ''%%/dev/mmcblk0%%'' o ''%%/dev/mmcblk1%%'', etc. etc. Dependerá de la ranura usada. Las particiones en este tipo de dispositivos tienen rutas como por ejemplo ''%%/dev/mmcblk0p1%%''.
 
-Dependiendo de donde conectemos la tarjeta tendremos que usar diferentes
-rutas. En el procedimiento descrito a continuación \texttt{\$\{card\}}
-será la ruta al dispositivo de la tarjeta y \$\{p\} la partición (si la
-hay).
-
-Si la tarjeta se conecta via adaptador USB, linux la va a asociar a un
-dispositivo /dev/sdx, por ejemplo en mi portátil el disco duro es
-\texttt{/dev/sda} las distintas particiones serán \texttt{/dev/sda1},
-\texttt{/devb/sda2}, etc.
-
-Si conectamos una memoria con un adaptador USB linux la podría mapear en
-\texttt{/dev/sdb} por ejemplo.
-
-Si la memoria se conecta mediante una ranura SD, linux la asociará a un
-dispositivo \texttt{/dev/mmcblk0} o \texttt{/dev/mmcblk1}, etc. etc.
-Dependerá de la ranura usada. Las particiones en este tipo de
-dispositivos tienen rutas como por ejemplo \texttt{/dev/mmcblk0p1}.
-
-Los datos se pueden almacenar directamente en la memoria SD o en una
-partición creada en la memoria.
+Los datos se pueden almacenar directamente en la memoria SD o en una partición creada en la memoria.
 
 Resumiendo:
 
-\begin{itemize}
-\tightlist
-\item
-  \texttt{\$\{card\}} será \texttt{/dev/sdb} o \texttt{/dev/mmcblk0}
-\item
-  \({card}\)\{p\} será \texttt{/dev/sdb1} o \texttt{/dev/mmcblk0p1}
-\end{itemize}
+  * ''%%${card}%%'' será ''%%/dev/sdb%%'' o ''%%/dev/mmcblk0%%''
+  * ${card}${p} será ''%%/dev/sdb1%%'' o ''%%/dev/mmcblk0p1%%''
 
-Antes de seguir adelante hay que estar completamente seguro del
-dispositivo asociado a nuestra memoria SD para no armar ningún
-estropicio.
+Antes de seguir adelante hay que estar completamente seguro del dispositivo asociado a nuestra memoria SD para no armar ningún estropicio.
 
 Hay varias comprobaciones que se pueden hacer:
 
-\texttt{dmesg\ \textbar{}tail} nos permitirá echar un ojo a los últimos
-mensajes en el log del sistema. Si acabamos de insertar la memoria
-veremos el dispositivo usado.
+''%%dmesg |tail%%'' nos permitirá echar un ojo a los últimos mensajes en el log del sistema. Si acabamos de insertar la memoria veremos el dispositivo usado.
 
-\texttt{sudo\ fdisk\ -l} nos permite ver las particiones montadas en
-nuestro linux, por ejemplo con mi SD en la ranura SD de mi portatil la
-salida es (entre otras cosas, he obviado las particiones de los discos
-duros):
+''%%sudo fdisk -l%%'' nos permite ver las particiones montadas en nuestro linux, por ejemplo con mi SD en la ranura SD de mi portatil la salida es (entre otras cosas, he obviado las particiones de los discos duros):
 
-\begin{verbatim}
+<code>
 Disk /dev/mmcblk0: 7.4 GiB, 7948206080 bytes, 15523840 sectors
 Units: sectors of 1 * 512 = 512 bytes
 Sector size (logical/physical): 512 bytes / 512 bytes
 I/O size (minimum/optimal): 512 bytes / 512 bytes
 Disklabel type: dos
 Disk identifier: 0x00000000
-\end{verbatim}
+</code>
+''%%cat /proc/partitions%%'' también nos dará una lista de particiones, en mi portátil las que interesan son:
 
-\texttt{cat\ /proc/partitions} también nos dará una lista de
-particiones, en mi portátil las que interesan son:
-
-\begin{verbatim}
+<code>
  179        0    7761920 mmcblk0
  179        1    7757824 mmcblk0p1
-\end{verbatim}
-
-Descargamos la imagen de Jessie adaptada a la \emph{Orange Pi Zero}
-desde la página \url{https://www.armbian.com/download/}
+</code>
+Descargamos la imagen de Jessie adaptada a la //Orange Pi Zero// desde la página https://www.armbian.com/download/
 
 Descomprimimos la imagen y la grabamos en la tarjeta SD con el comando:
 
-\begin{verbatim}
+<code>
 sudo dd if=./Armbian_5.24_Orangepizero_Debian_jessie_3.4.113.img of=/dev/mmcblk0
-\end{verbatim}
+</code>
+Insertamos la tarjeta en la //Orange Pi// y le damos alimentación. El primer arranque llevará alrededor de tres minutos, y tras ese tiempo aun hará falta un minuto más para poder hacer login. Este retardo es debido a que el sistema intentará actualizar la lista de paquetes y creará un area de swap de emergencia en la SD, y además cambiará el tamaño de la partición que hemos creado para ocupar todo el espacio libre en la SD.
 
-Insertamos la tarjeta en la \emph{Orange Pi} y le damos alimentación. El
-primer arranque llevará alrededor de tres minutos, y tras ese tiempo aun
-hará falta un minuto más para poder hacer login. Este retardo es debido
-a que el sistema intentará actualizar la lista de paquetes y creará un
-area de swap de emergencia en la SD, y además cambiará el tamaño de la
-partición que hemos creado para ocupar todo el espacio libre en la SD.
+De momento solo la he arrancado y efectivamente las particiones han cambiado tras el arranque así que tiene buena pinta.
 
-De momento solo la he arrancado y efectivamente las particiones han
-cambiado tras el arranque así que tiene buena pinta.
+Volvemos a insertar la SD en la //Orange Pi// y la conectamos con un cable ethernet al router de casa. El Armbian viene configurado por defecto para obtener su IP desde un servidor DHCP.
 
-Volvemos a insertar la SD en la \emph{Orange Pi} y la conectamos con un
-cable ethernet al router de casa. El Armbian viene configurado por
-defecto para obtener su IP desde un servidor DHCP.
+Como mi cutre-router no me da información de las IP asignadas usamos //nmap//:
 
-Como mi cutre-router no me da información de las IP asignadas usamos
-\emph{nmap}:
-
-\begin{verbatim}
+<code>
 nmap -sP 192.168.0.0 /24
-\end{verbatim}
+</code>
+Con eso averiguamos la IP asignada a la //Orange Pi Zero// y ya podemos hacer login con el siguiente comando ((La password por defecto de Armbian es **1234**, nos pedirá cambiarla en el primer login.
+)):
 
-Con eso averiguamos la IP asignada a la \emph{Orange Pi Zero} y ya
-podemos hacer login con el siguiente comando \footnote{La password por
-  defecto de Armbian es \textbf{1234}, nos pedirá cambiarla en el primer
-  login.}:
-
-\begin{verbatim}
+<code>
 ssh root@192.168.0.109
-\end{verbatim}
-
+</code>
 ¡Y ya estamos!
 
-\begin{figure}[htbp]
-\centering
-\includegraphics{src/img/OrangePiZero_FirstLogin.png}
-\caption{Primer login en \emph{Orange Pi}}
-\end{figure}
+{{:src/img/OrangePiZero_FirstLogin.png| Primer login en //Orange Pi//}}
 
 Lo primero es poner al dia el sistema:
 
-\begin{verbatim}
+<code>
 apt-get update
 apt-get upgrade
-\end{verbatim}
+</code>
+Si quieres puedes reconfigurar el //time zone//:
 
-Si quieres puedes reconfigurar el \emph{time zone}:
-
-\begin{verbatim}
+<code>
 dpgk-reconfigura tzdata
-\end{verbatim}
-
-\subsection{Conexión WIFI}\label{conexiuxf3n-wifi}
+</code>
+===== Conexión WIFI =====
 
 Vamos a comprobar que todo va bien:
 
-\begin{verbatim}
+<code>
 root@orangepizero:~# iwconfig
 lo        no wireless extensions.
 
@@ -241,11 +97,10 @@ wlan0     IEEE 802.11bgn  ESSID:off/any
           Power Management:on
 
 eth0      no wireless extensions.
-\end{verbatim}
-
+</code>
 Todo tiene buena pinta, vamos a ver si detecta WIFIs:
 
-\begin{verbatim}
+<code>
 root@orangepizero:~# iwlist wlan0  scan |grep ESSID
                     ESSID:"wificlientesR"
                     ESSID:"casa_de_verano"
@@ -259,31 +114,21 @@ root@orangepizero:~# iwlist wlan0  scan |grep ESSID
                     ESSID:"unaWifi"
                     ESSID:""
                     ESSID:"mikasa"
-\end{verbatim}
+</code>
+Para configurar el wifi echamos un ojo al fichero ''%%/etc/network/interfaces%%'' pero en ese mismo fichero encontramos el aviso:
 
-Para configurar el wifi echamos un ojo al fichero
-\texttt{/etc/network/interfaces} pero en ese mismo fichero encontramos
-el aviso:
-
-\begin{verbatim}
+<code>
 # Armbian ships with network-manager installed by default. To save you time
 # and hassles consider using 'sudo nmtui' instead of configuring Wi-Fi settings
 # manually.
-\end{verbatim}
+</code>
+Así que basta con ejecutar ''%%sudo nwtui%%'' y ya podemos dar de alta nuestra wifi (yo la prefiero con IP estática).
 
-Así que basta con ejecutar \texttt{sudo\ nwtui} y ya podemos dar de alta
-nuestra wifi (yo la prefiero con IP estática).
+{{:src/img/OrangePiZero_tmtui.png| Configuración WIFI}}
 
-\begin{figure}[htbp]
-\centering
-\includegraphics{src/img/OrangePiZero_tmtui.png}
-\caption{Configuración WIFI}
-\end{figure}
+Ejecutamos ''%%ifconfig%%'' y ya vemos nuestro nuevo interface configurado:
 
-Ejecutamos \texttt{ifconfig} y ya vemos nuestro nuevo interface
-configurado:
-
-\begin{verbatim}
+<code>
 ifconfig
 
 wlan0     Link encap:Ethernet  HWaddr a4:7c:f2:9a:97:7c
@@ -294,124 +139,82 @@ wlan0     Link encap:Ethernet  HWaddr a4:7c:f2:9a:97:7c
           TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
           collisions:0 txqueuelen:1000
           RX bytes:328 (328.0 B)  TX bytes:852 (852.0 B)
-\end{verbatim}
+</code>
+====== Orange Pi Zero, características técnicas ======
 
-\section{Orange Pi Zero, características
-técnicas}\label{orange-pi-zero-caracteruxedsticas-tuxe9cnicas}
+La tarjeta de desarrollo Orange Pi Zero viene equipada con un procesador Cortex A7 Allwinner H2+ quad core, con 256 o 512MB RAM, Ethernet, y puertos USB. Disponible en Aliexpress (tienda oficial) por 6.99 dolares, mas 3.39 dolares como gastos de envío.
 
-La tarjeta de desarrollo Orange Pi Zero viene equipada con un procesador
-Cortex A7 Allwinner H2+ quad core, con 256 o 512MB RAM, Ethernet, y
-puertos USB. Disponible en Aliexpress (tienda oficial) por 6.99 dolares,
-mas 3.39 dolares como gastos de envío.
+===== Especificaciones =====
 
-\subsection{Especificaciones}\label{especificaciones}
+  * SoC – Allwinner H2(+) quad core Cortex A7 processor @ 1.2 GHz with Mali-400MP2 GPU @ 600 MHz
+  * System Memory – 256 to 512 MB DDR3-1866 SDRAM
+  * Storage – micro SD card slot
+  * Connectivity – 10/100M Ethernet + 802.11 b/g/n WiFi (Allwinner XR819 WiFi module) with u.FL antenna connector and external antenna
+  * USB – 1x USB 2.0 host ports, 1x micro USB OTG port
+  * Expansion headers – Unpopulated 26-pin “Raspberry Pi B+” header + 13-pin header with headphone, 2x USB 2.0, TV out, microphone and IR receiver signals
+  * Debugging – Unpopulated 3-pin header for serial console
+  * Misc – 2x LEDs
+  * Power Supply – 5V via micro USB port or optional PoE
+  * Dimensions – 52 x 46 mm
+  * Weight – 26 grams
 
-\begin{itemize}
-\tightlist
-\item
-  SoC -- Allwinner H2(+) quad core Cortex A7 processor @ 1.2 GHz with
-  Mali-400MP2 GPU @ 600 MHz
-\item
-  System Memory -- 256 to 512 MB DDR3-1866 SDRAM
-\item
-  Storage -- micro SD card slot
-\item
-  Connectivity -- 10/100M Ethernet + 802.11 b/g/n WiFi (Allwinner XR819
-  WiFi module) with u.FL antenna connector and external antenna
-\item
-  USB -- 1x USB 2.0 host ports, 1x micro USB OTG port
-\item
-  Expansion headers -- Unpopulated 26-pin ``Raspberry Pi B+'' header +
-  13-pin header with headphone, 2x USB 2.0, TV out, microphone and IR
-  receiver signals
-\item
-  Debugging -- Unpopulated 3-pin header for serial console
-\item
-  Misc -- 2x LEDs
-\item
-  Power Supply -- 5V via micro USB port or optional PoE
-\item
-  Dimensions -- 52 x 46 mm
-\item
-  Weight -- 26 grams
-\end{itemize}
+===== Esquema de pines =====
 
-\subsection{Esquema de pines}\label{esquema-de-pines}
+Un excelente esquema de pines puede conseguirse en [[https://oshlab.com/orange-pi-zero-pinout/|OSHLab]]
 
-Un excelente esquema de pines puede conseguirse en
-\href{https://oshlab.com/orange-pi-zero-pinout/}{OSHLab}
+{{:src/img/Orange-Pi-Zero-Pinout.jpg| Pineado Orange Pi}}
 
-\begin{figure}[htbp]
-\centering
-\includegraphics{src/img/Orange-Pi-Zero-Pinout.jpg}
-\caption{Pineado Orange Pi}
-\end{figure}
+===== Esquemas eléctricos =====
 
-\subsection{Esquemas eléctricos}\label{esquemas-eluxe9ctricos}
+Pueden bajarse de [[http://harald.studiokubota.com/wordpress/wp-content/uploads/2016/11/Orange-Pi-Zero-Schanetics-v1_11.pdf|aquí]]
 
-Pueden bajarse de
-\href{http://harald.studiokubota.com/wordpress/wp-content/uploads/2016/11/Orange-Pi-Zero-Schanetics-v1_11.pdf}{aquí}
+====== Accediendo al hardware desde linea de comandos ======
 
-\section{Accediendo al hardware desde linea de
-comandos}\label{accediendo-al-hardware-desde-linea-de-comandos}
+La memoria es más que suficiente para correr programas. El Armbian consume únicamente 40Mb en funcionamiento.
 
-La memoria es más que suficiente para correr programas. El Armbian
-consume únicamente 40Mb en funcionamiento.
-
-\begin{verbatim}
+<code>
 root@orangepizero:~# free
              total       used       free     shared    buffers     cached
 Mem:        247068     122300     124768       4620       7908      69548
 -/+ buffers/cache:      44844     202224
 Swap:       131068          0     131068
-\end{verbatim}
+</code>
+Vamos a hacer algunas pruebas con el hardware. En Armbian, como todo Unix que se precie, todo es un fichero.
 
-Vamos a hacer algunas pruebas con el hardware. En Armbian, como todo
-Unix que se precie, todo es un fichero.
+En el directorio ''%%/sys/class%%'' encontraremos cosas interesantes:
 
-En el directorio \texttt{/sys/class} encontraremos cosas interesantes:
-
-\begin{verbatim}
+<code>
 root@orangepizero:~# ls /sys/class
 backlight  cuse     graphics     i2c-dev    mdio_bus  power_supply  script   spidev      thermal     video4linux
 bdi    devfreq  hdmi     ieee80211  mem       ppp       scsi_device  spi_master  tty         vtconsole
 block      disp     hidraw   input      misc      rc        scsi_disk    sunxi_cma_test  udc
 bsg    dma      hwmon    leds       mmc_host  rfkill        scsi_host    sunxi_dump  usb_device
 cedar_dev  gpio     i2c-adapter  lirc       net       rtc       sound    sunxi_info  vc
-\end{verbatim}
+</code>
+===== LEDs =====
 
-\subsection{LEDs}\label{leds}
+Si miramos dentro del directorio ''%%leds%%'' veremos que hay un directorio que representa cada uno de los leds de la placa:
 
-Si miramos dentro del directorio \texttt{leds} veremos que hay un
-directorio que representa cada uno de los leds de la placa:
-
-\begin{verbatim}
+<code>
 root@orangepizero:~# cd /sys/class/leds/
 root@orangepizero:/sys/class/leds# ls
 green_led  red_led
-\end{verbatim}
+</code>
+Podemos ver, por ejemplo, a que evento está asociado cada led ejecutando ''%%cat green_led/trigger%%'' (tiene el valor ''%%default_on%%'') o ''%%cat red_led/trigger%%'' (tiene el valor ''%%none%%'').
 
-Podemos ver, por ejemplo, a que evento está asociado cada led ejecutando
-\texttt{cat\ green\_led/trigger} (tiene el valor \texttt{default\_on}) o
-\texttt{cat\ red\_led/trigger} (tiene el valor \texttt{none}).
-
-\begin{verbatim}
+<code>
 root@orangepizero:/sys/class/leds# cat green_led/trigger 
 none mmc0 mmc1 timer heartbeat backlight [default-on] rfkill0 phy1rx phy1tx phy1assoc phy1radio 
 root@orangepizero:/sys/class/leds# cat red_led/trigger 
 [none] mmc0 mmc1 timer heartbeat backlight default-on rfkill0 phy1rx phy1tx phy1assoc phy1radio 
-\end{verbatim}
+</code>
+O podemos encender el led rojo ejecutando ''%%echo 1 > red_led/brightness%%'', y para apagarlo ya os podéis imaginar que es ''%%echo 0 > red_led/brightness%%''.
 
-O podemos encender el led rojo ejecutando
-\texttt{echo\ 1\ \textgreater{}\ red\_led/brightness}, y para apagarlo
-ya os podéis imaginar que es
-\texttt{echo\ 0\ \textgreater{}\ red\_led/brightness}.
-
-\subsection{GPIO}\label{gpio}
+===== GPIO =====
 
 Podemos ver los GPIO disponibles ejecutando:
 
-\begin{verbatim}
+<code>
 root@orangepizero:~# cat /sys/kernel/debug/gpio
 GPIOs 0-383, platform/sunxi-pinctrl, sunxi-pinctrl:
  gpio-10  (?                   ) out hi
@@ -419,17 +222,15 @@ GPIOs 0-383, platform/sunxi-pinctrl, sunxi-pinctrl:
  gpio-202 (xradio_irq          ) in  lo
  gpio-354 (?                   ) out hi
  gpio-362 (green_led           ) out hi
-\end{verbatim}
-
+</code>
 Podemos activar un nuevo puerto GPIO, digamos el 15:
 
-\begin{verbatim}
+<code>
 root@orangepizero:~# echo 15 >/sys/class/gpio/export
-\end{verbatim}
-
+</code>
 Ahora veremos el puerto activo:
 
-\begin{verbatim}
+<code>
 root@orangepizero:~# cat /sys/kernel/debug/gpio 
 GPIOs 0-383, platform/sunxi-pinctrl, sunxi-pinctrl:
  gpio-10  (?                   ) out hi
@@ -438,133 +239,76 @@ GPIOs 0-383, platform/sunxi-pinctrl, sunxi-pinctrl:
  gpio-202 (xradio_irq          ) in  lo
  gpio-354 (?                   ) out hi
  gpio-362 (green_led           ) out hi
-\end{verbatim}
+</code>
+En el directorio ''%%/sys/class/gpio/gpio15/%%'' tendremos los interfaces usuales para puertos gpio definidos en el kernel de linux.
 
-En el directorio \texttt{/sys/class/gpio/gpio15/} tendremos los
-interfaces usuales para puertos gpio definidos en el kernel de linux.
+====== Bibliotecas útiles ======
 
-\section{Bibliotecas útiles}\label{bibliotecas-uxfatiles}
-
-\section{Python}\label{python}
+====== Python ======
 
 Para probar bibliotecas de Python instalamos:
 
-\begin{verbatim}
+<code>
 sudo aptitude install python-pip
 sudo aptitude install python-virtualenv
 sudo aptitude install python-dev
-\end{verbatim}
+</code>
+===== Referencias =====
 
-\subsection{Referencias}\label{referencias}
+  * [[http://harald.studiokubota.com/wordpress/index.php/2016/11/19/orange-pi-zero-neat/|Probando la Orange Pi Zero]]
+  * [[http://falsinsoft.blogspot.com.es/2012/11/access-gpio-from-linux-user-space.html|GPIO from commandline]]
+  * [[http://www.emcraft.com/stm32f429discovery/controlling-gpio-from-linux-user-space|mas de lo mismo]]
 
-\begin{itemize}
-\tightlist
-\item
-  \href{http://harald.studiokubota.com/wordpress/index.php/2016/11/19/orange-pi-zero-neat/}{Probando
-  la Orange Pi Zero}
-\item
-  \href{http://falsinsoft.blogspot.com.es/2012/11/access-gpio-from-linux-user-space.html}{GPIO
-  from commandline}
-\item
-  \href{http://www.emcraft.com/stm32f429discovery/controlling-gpio-from-linux-user-space}{mas
-  de lo mismo}
-\end{itemize}
+====== Referencias ======
 
-\section{Referencias}\label{referencias-1}
+  * [[http://www.orangepi.org/|Página oficial]]
+  * [[http://www.orangepi.org/downloadresources/|Recursos oficiales]] aquí hay imágenes y los esquemáticos
+  * [[https://www.aliexpress.com/store/1553371?spm=2114.8147860.0.0.F1q43C|Tienda en Aliexpress]]
+  * http://linux-sunxi.org/Bootable_SD_card
+  * https://www.armbian.com/orange-pi-zero/
+  * https://docs.armbian.com/User-Guide_Getting-Started/
+  * https://docs.armbian.com/Hardware_Allwinner/
+  * [[https://linux-sunxi.org/GPIO|GPIO]] Una explicación de como acceder al gpio desde terminal
+  * [[https://linux-sunxi.org/Orange_Pi_Zero|Info variada]] Aquí tenemos el esquema de pines
+  * [[https://forum.armbian.com/index.php/topic/1886-gpio-access-from-user-space/|GPIO desde el espacio de usuario]]
+  * [[https://forum.armbian.com/index.php/topic/1471-solved-difficulty-accessing-gpio-via-the-sunxi-gpio-export-interface/|sunxi-gpio]]
+  * [[http://orangepiweb.es/index.php|orange pi español]]
+  * [[https://www.amedeobaragiola.me/blog/2016/06/04/archlinux-arm-on-orange-pi-one/|ArchLinux ARM on Orange Pi]]
+  * [[http://mirror.lakka.tv/nightly/|Lakka Nightly Builds]] Lakka is the official Linux distribution of RetroArch and the libretro ecosystem. Each game system is implemented as a libretro core, while the frontend RetroArch takes care of inputs and display. This clear separation ensures modularity and centralized configuration. Also nightly build for H3 is supported
 
-\begin{itemize}
-\tightlist
-\item
-  \href{http://www.orangepi.org/}{Página oficial}
-\item
-  \href{http://www.orangepi.org/downloadresources/}{Recursos oficiales}
-  aquí hay imágenes y los esquemáticos
-\item
-  \href{https://www.aliexpress.com/store/1553371?spm=2114.8147860.0.0.F1q43C}{Tienda
-  en Aliexpress}
-\item
-  \url{http://linux-sunxi.org/Bootable_SD_card}
-\item
-  \url{https://www.armbian.com/orange-pi-zero/}
-\item
-  \url{https://docs.armbian.com/User-Guide_Getting-Started/}
-\item
-  \url{https://docs.armbian.com/Hardware_Allwinner/}
-\item
-  \href{https://linux-sunxi.org/GPIO}{GPIO} Una explicación de como
-  acceder al gpio desde terminal
-\item
-  \href{https://linux-sunxi.org/Orange_Pi_Zero}{Info variada} Aquí
-  tenemos el esquema de pines
-\item
-  \href{https://forum.armbian.com/index.php/topic/1886-gpio-access-from-user-space/}{GPIO
-  desde el espacio de usuario}
-\item
-  \href{https://forum.armbian.com/index.php/topic/1471-solved-difficulty-accessing-gpio-via-the-sunxi-gpio-export-interface/}{sunxi-gpio}
-\item
-  \href{http://orangepiweb.es/index.php}{orange pi español}
-\item
-  \href{https://www.amedeobaragiola.me/blog/2016/06/04/archlinux-arm-on-orange-pi-one/}{ArchLinux
-  ARM on Orange Pi}
-\item
-  \href{http://mirror.lakka.tv/nightly/}{Lakka Nightly Builds} Lakka is
-  the official Linux distribution of RetroArch and the libretro
-  ecosystem. Each game system is implemented as a libretro core, while
-  the frontend RetroArch takes care of inputs and display. This clear
-  separation ensures modularity and centralized configuration. Also
-  nightly build for H3 is supported
-\end{itemize}
+====== META ======
 
-\section{META}\label{meta}
+Este documento está escrito en [[http://pandoc.org/README.html|Markdown-Pandoc]]. Pandoc es un sistema muy sencillo de documentación que permite generar múltiples formatos de salida.
 
-Este documento está escrito en
-\href{http://pandoc.org/README.html}{Markdown-Pandoc}. Pandoc es un
-sistema muy sencillo de documentación que permite generar múltiples
-formatos de salida.
+Las fuentes del documento están en el directorio **doc/src** dentro del árbol de directorios del proyecto.
 
-Las fuentes del documento están en el directorio \textbf{doc/src} dentro
-del árbol de directorios del proyecto.
+Los formatos de salida son el fichero **README.md** en formato //Markdown-Github// y los documentos que puedes encontrar en el directorio **doc/out** incluyendo un fichero en formato //pdf//.
 
-Los formatos de salida son el fichero \textbf{README.md} en formato
-\emph{Markdown-Github} y los documentos que puedes encontrar en el
-directorio \textbf{doc/out} incluyendo un fichero en formato \emph{pdf}.
+Los documentos en los distintos formatos de salida se generan automáticamente sin mas que ejecutar:
 
-Los documentos en los distintos formatos de salida se generan
-automáticamente sin mas que ejecutar:
-
-\begin{verbatim}
+<code>
 $ cd doc
 $ make
-\end{verbatim}
+</code>
+Otras opciones que soporta el **makefile** serían:
 
-Otras opciones que soporta el \textbf{makefile} serían:
-
-\begin{description}
-\item[reset]
-para regenerar todos los documentos de salida.
-\item[clean]
-para borrar todos los fichero de salida
-\item[pdf, latex, mediawiki, epub, odt, docx]
-genera el fichero de salida en el formato especificado: pdf, latex, etc.
-etc.
-\end{description}
+  * **reset** para regenerar todos los documentos de salida.
+  * **clean** para borrar todos los fichero de salida
+  * **pdf, latex, mediawiki, epub, odt, docx** genera el fichero de salida en el formato especificado: pdf, latex, etc. etc.
 
 Ejemplos:
 
-\begin{verbatim}
+<code>
 $ make reset
 $ make odt
-\end{verbatim}
+</code>
+===== Requisitos =====
 
-\subsection{Requisitos}\label{requisitos}
+Necesitas tener instalaco **Pandoc**, hay [[https://github.com/brico-labs/pandoc_basico|una pequeña introducción]] en el el github de BricoLabs.
 
-Necesitas tener instalaco \textbf{Pandoc}, hay
-\href{https://github.com/brico-labs/pandoc_basico}{una pequeña
-introducción} en el el github de BricoLabs.
+====== Licencia ======
 
-\section{Licencia}\label{licencia}
-
-\begin{verbatim}
+<code>
 
 Attribution-ShareAlike 4.0 International
 
@@ -993,6 +737,5 @@ the avoidance of doubt, this paragraph does not form part of the
 public licenses.
 
 Creative Commons may be contacted at creativecommons.org.
-\end{verbatim}
 
-\end{document}
+</code>

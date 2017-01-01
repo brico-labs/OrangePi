@@ -206,6 +206,15 @@ GPIOs 0-383, platform/sunxi-pinctrl, sunxi-pinctrl:
  gpio-362 (green_led           ) out hi</pre>
 En el directorio <code>/sys/class/gpio/gpio15/</code> tendremos los interfaces usuales para puertos gpio definidos en el kernel de linux.
 
+= Bibliotecas útiles =
+
+= Python =
+
+Para probar bibliotecas de Python instalamos:
+
+<pre class="{bash}">sudo aptitude install python-pip
+sudo aptitude install python-virtualenv
+sudo aptitude install python-dev</pre>
 == Referencias ==
 
 * [http://harald.studiokubota.com/wordpress/index.php/2016/11/19/orange-pi-zero-neat/ Probando la Orange Pi Zero]
@@ -226,6 +235,8 @@ En el directorio <code>/sys/class/gpio/gpio15/</code> tendremos los interfaces u
 * [https://forum.armbian.com/index.php/topic/1886-gpio-access-from-user-space/ GPIO desde el espacio de usuario]
 * [https://forum.armbian.com/index.php/topic/1471-solved-difficulty-accessing-gpio-via-the-sunxi-gpio-export-interface/ sunxi-gpio]
 * [http://orangepiweb.es/index.php orange pi español]
+* [https://www.amedeobaragiola.me/blog/2016/06/04/archlinux-arm-on-orange-pi-one/ ArchLinux ARM on Orange Pi]
+* [http://mirror.lakka.tv/nightly/ Lakka Nightly Builds] Lakka is the official Linux distribution of RetroArch and the libretro ecosystem. Each game system is implemented as a libretro core, while the frontend RetroArch takes care of inputs and display. This clear separation ensures modularity and centralized configuration. Also nightly build for H3 is supported
 
 = META =
 

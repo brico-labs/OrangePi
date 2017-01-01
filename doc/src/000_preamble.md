@@ -2,6 +2,7 @@
 title: Probando la Orange Pi
 subtitle: Un proyecto de BricoLabs
 author:
+- Luis Llamas <lfllamas93@gmail.com>
 - Sergio Alvariño <sergio.alvarino@vodafone.com>
 institute: BricoLabs
 tags: [Orange Pi, Armbian]

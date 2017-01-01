@@ -56,6 +56,13 @@ $(output)/$(target).mw: $(sources)
 	--output=$(output)/$(target).mw \
 	$(sources)
 
+# dokuwiki  -- buid dokuwiki file into output directory
+dokuwiki: $(output)/$(target).dw $(sources)
+$(output)/$(target).dw: $(sources)
+	pandoc --from markdown --to dokuwiki \
+	--output=$(output)/$(target).dw \
+	$(sources)
+
 #epub  -- buid epub file into output directory
 epub: $(output)/$(target).epub $(sources)
 $(output)/$(target).epub: $(sources)
