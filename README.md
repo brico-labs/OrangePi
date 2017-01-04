@@ -793,4 +793,4 @@ Licencia
 
     Creative Commons may be contacted at creativecommons.org.
 
-[^1] La password por defecto de Armbian es **1234**, nos pedirá cambiarla en el primer login.
+[^1]: La password por defecto de Armbian es **1234**, nos pedirá cambiarla en el primer login.
