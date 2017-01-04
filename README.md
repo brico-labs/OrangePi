@@ -59,7 +59,7 @@ Como mi cutre-router no me da información de las IP asignadas usamos *nmap*:
 
     nmap -sP 192.168.0.0 /24
 
-Con eso averiguamos la IP asignada a la *Orange Pi Zero* y ya podemos hacer login con el siguiente comando [1]:
+Con eso averiguamos la IP asignada a la *Orange Pi Zero* y ya podemos hacer login con el siguiente comando [^1]:
 
     ssh root@192.168.0.109
 
@@ -793,4 +793,4 @@ Licencia
 
     Creative Commons may be contacted at creativecommons.org.
 
-[1] La password por defecto de Armbian es **1234**, nos pedirá cambiarla en el primer login.
+[^1] La password por defecto de Armbian es **1234**, nos pedirá cambiarla en el primer login.
