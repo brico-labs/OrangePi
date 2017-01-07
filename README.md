@@ -46,8 +46,8 @@ Disk identifier: 0x00000000
 Descargamos la imagen de Jessie adaptada a la *Orange Pi Zero* desde la página <https://www.armbian.com/download/>
 
 Descomprimimos la imagen y la grabamos en la tarjeta SD con el comando:
-
-    sudo dd if=./Armbian_5.24_Orangepizero_Debian_jessie_3.4.113.img of=/dev/mmcblk0
+    
+    sudo dd if=./Armbian_5.24_Orangepizero_Debian_jessie_3.4.113.img of=/dev/mmcblk0 bs=2k status=progress
 
 Insertamos la tarjeta en la *Orange Pi* y le damos alimentación. El primer arranque llevará alrededor de tres minutos, y tras ese tiempo aun hará falta un minuto más para poder hacer login. Este retardo es debido a que el sistema intentará actualizar la lista de paquetes y creará un area de swap de emergencia en la SD, y además cambiará el tamaño de la partición que hemos creado para ocupar todo el espacio libre en la SD.
 
@@ -59,7 +59,7 @@ Como mi cutre-router no me da información de las IP asignadas usamos *nmap*:
 
     nmap -sP 192.168.0.0 /24
 
-Con eso averiguamos la IP asignada a la *Orange Pi Zero* y ya podemos hacer login con el siguiente comando [1]:
+Con eso averiguamos la IP asignada a la *Orange Pi Zero* y ya podemos hacer login con el siguiente comando [^1]:
 
     ssh root@192.168.0.109
 
@@ -818,4 +818,4 @@ Licencia
 
     Creative Commons may be contacted at creativecommons.org.
 
-[1] La password por defecto de Armbian es **1234**, nos pedirá cambiarla en el primer login.
+[^1]: La password por defecto de Armbian es **1234**, nos pedirá cambiarla en el primer login.
