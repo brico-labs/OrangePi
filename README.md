@@ -65,7 +65,7 @@ Con eso averiguamos la IP asignada a la *Orange Pi Zero* y ya podemos hacer logi
 
 ¡Y ya estamos!
 
-![Primer login en *Orange Pi*](src/img/OrangePiZero_FirstLogin.png)
+![Primer login en *Orange Pi*](doc/src/img/OrangePiZero_FirstLogin.png)
 
 Lo primero es poner al dia el sistema:
 
@@ -118,7 +118,7 @@ Para configurar el wifi echamos un ojo al fichero `/etc/network/interfaces` pero
 
 Así que basta con ejecutar `sudo nwtui` y ya podemos dar de alta nuestra wifi (yo la prefiero con IP estática).
 
-![Configuración WIFI](src/img/OrangePiZero_tmtui.png)
+![Configuración WIFI](doc/src/img/OrangePiZero_tmtui.png)
 
 Ejecutamos `ifconfig` y ya vemos nuestro nuevo interface configurado:
 
@@ -158,7 +158,7 @@ Esquema de pines
 
 Un excelente esquema de pines puede conseguirse en [OSHLab](https://oshlab.com/orange-pi-zero-pinout/)
 
-![Pineado Orange Pi](src/img/Orange-Pi-Zero-Pinout.jpg)
+![Pineado Orange Pi](doc/src/img/Orange-Pi-Zero-Pinout.jpg)
 
 Esquemas eléctricos
 -------------------
@@ -258,12 +258,37 @@ El caso es que el virtualenv no me funciona después de ejecutar estos pasos. Fi
 
 Despues de eso ya he podido usar *virtualenv* sin problemas.
 
+### orangepi\_PC\_gpio\_pyH3
+
+Nos clonamos el repo. Voy a hacer todas las pruebas desde la cuenta de **root**.
+
+    git clone https://github.com/duxingkei33/orangepi_PC_gpio_pyH3
+
+Hay que cambiar el fichero `orangepi_PC_gpio_pyH3/pyA20/gpio/mapping.h`
+
+La definicion de *STATUS\_LED* debe quedar en el *GPA17* en lugar de *GPA15*:
+
+    {   "STATUS_LED",  SUNXI_GPA(17),  2   },
+
+Creamos un entorno para pruebas y lo activamos:
+
+    virtualenv test_A
+    source test_A/bin/activate
+
+Compilamos la biblioteca:
+
+    cd orangepi_PC_gpio_pyH3
+    python setup.py install
+
+Y ya podemos probar los ficheros de ejemplo.
+
 Referencias
 -----------
 
 -   [Probando la Orange Pi Zero](http://harald.studiokubota.com/wordpress/index.php/2016/11/19/orange-pi-zero-neat/)
 -   [GPIO from commandline](http://falsinsoft.blogspot.com.es/2012/11/access-gpio-from-linux-user-space.html)
 -   [mas de lo mismo](http://www.emcraft.com/stm32f429discovery/controlling-gpio-from-linux-user-space)
+-   [hilo GPIO en foro](https://forum.armbian.com/index.php/topic/3084-orange-pi-zero-python-gpio-library/)
 
 Monitorizar temperatura
 =======================
@@ -296,7 +321,7 @@ También podemos instalar RPi-Monitor con el comando:
 
 Una vez instalado podemos visitar desde nuestro navegador la dirección ip de nuestra OPI Zero *http://opi-adress:8888* para ver las estadísticas.
 
-![Estadísticas en RPi-Monitor](src/img/rpimonitor.png)
+![Estadísticas en RPi-Monitor](doc/src/img/rpimonitor.png)
 
 ¡Ojo! Las gráficas no se refrescan automáticamente hay que recargar la página.
 

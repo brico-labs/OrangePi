@@ -112,6 +112,40 @@ pip install --upgrade virtualenv
 
 Despues de eso ya he podido usar _virtualenv_ sin problemas.
 
+### orangepi_PC_gpio_pyH3
+
+Nos clonamos el repo. Voy a hacer todas las pruebas desde la cuenta de
+__root__.
+
+~~~~
+git clone https://github.com/duxingkei33/orangepi_PC_gpio_pyH3
+~~~~
+
+Hay que cambiar el fichero `orangepi_PC_gpio_pyH3/pyA20/gpio/mapping.h`
+
+La definicion de *STATUS_LED* debe quedar en el _GPA17_ en lugar de _GPA15_:
+
+~~~~
+{   "STATUS_LED",  SUNXI_GPA(17),  2   },
+~~~~
+
+Creamos un entorno para pruebas y lo activamos:
+
+~~~~
+virtualenv test_A
+source test_A/bin/activate
+~~~~
+
+Compilamos la biblioteca:
+
+~~~~
+cd orangepi_PC_gpio_pyH3
+python setup.py install
+~~~~
+
+Y ya podemos probar los ficheros de ejemplo.
+
+
 
 
 ## Referencias
@@ -119,4 +153,4 @@ Despues de eso ya he podido usar _virtualenv_ sin problemas.
 * [Probando la Orange Pi Zero](http://harald.studiokubota.com/wordpress/index.php/2016/11/19/orange-pi-zero-neat/)
 * [GPIO from commandline](http://falsinsoft.blogspot.com.es/2012/11/access-gpio-from-linux-user-space.html)
 * [mas de lo mismo](http://www.emcraft.com/stm32f429discovery/controlling-gpio-from-linux-user-space)
-
+* [hilo GPIO en foro](https://forum.armbian.com/index.php/topic/3084-orange-pi-zero-python-gpio-library/)

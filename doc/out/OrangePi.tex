@@ -469,6 +469,41 @@ pip install --upgrade virtualenv
 
 Despues de eso ya he podido usar \emph{virtualenv} sin problemas.
 
+\subsubsection{orangepi\_PC\_gpio\_pyH3}\label{orangepi_pc_gpio_pyh3}
+
+Nos clonamos el repo. Voy a hacer todas las pruebas desde la cuenta de
+\textbf{root}.
+
+\begin{verbatim}
+git clone https://github.com/duxingkei33/orangepi_PC_gpio_pyH3
+\end{verbatim}
+
+Hay que cambiar el fichero
+\texttt{orangepi\_PC\_gpio\_pyH3/pyA20/gpio/mapping.h}
+
+La definicion de \emph{STATUS\_LED} debe quedar en el \emph{GPA17} en
+lugar de \emph{GPA15}:
+
+\begin{verbatim}
+{   "STATUS_LED",  SUNXI_GPA(17),  2   },
+\end{verbatim}
+
+Creamos un entorno para pruebas y lo activamos:
+
+\begin{verbatim}
+virtualenv test_A
+source test_A/bin/activate
+\end{verbatim}
+
+Compilamos la biblioteca:
+
+\begin{verbatim}
+cd orangepi_PC_gpio_pyH3
+python setup.py install
+\end{verbatim}
+
+Y ya podemos probar los ficheros de ejemplo.
+
 \subsection{Referencias}\label{referencias}
 
 \begin{itemize}
@@ -482,6 +517,9 @@ Despues de eso ya he podido usar \emph{virtualenv} sin problemas.
 \item
   \href{http://www.emcraft.com/stm32f429discovery/controlling-gpio-from-linux-user-space}{mas
   de lo mismo}
+\item
+  \href{https://forum.armbian.com/index.php/topic/3084-orange-pi-zero-python-gpio-library/}{hilo
+  GPIO en foro}
 \end{itemize}
 
 \section{Monitorizar temperatura}\label{monitorizar-temperatura}
