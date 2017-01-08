@@ -249,6 +249,13 @@ Y ya podemos probar los ficheros de ejemplo.
 * [http://falsinsoft.blogspot.com.es/2012/11/access-gpio-from-linux-user-space.html GPIO from commandline]
 * [http://www.emcraft.com/stm32f429discovery/controlling-gpio-from-linux-user-space mas de lo mismo]
 * [https://forum.armbian.com/index.php/topic/3084-orange-pi-zero-python-gpio-library/ hilo GPIO en foro]
+* [https://gist.github.com/lanefu/f16a67195c9fa35c466c6b50cdaeadea WiringPi_OrangePi explicación lanefu]
+* [https://github.com/lanefu/WiringOtherPi El repo donde pretende unificar WiringPI]
+* [https://github.com/lanefu/WiringPi-Python-OP Otro Repo mas]
+* [https://gist.github.com/lanefu/f16a67195c9fa35c466c6b50cdaeadea Otro mas, este tio no para]
+* [https://forum.armbian.com/index.php/topic/2956-559-gpio-support-for-h2h3-boards-with-a-unified-wiringpi-library-in-a-neat-little-package/#entry20311 Hilo en el foro hablando de unificiación de bibliotecas]
+* [https://forum.armbian.com/index.php/topic/3084-orange-pi-zero-python-gpio-library/?hl=%2Bzero+%2Bgpio+%2Blibrary Otro hilo]
+* [https://forum.armbian.com/index.php/topic/3084-orange-pi-zero-python-gpio-library/ Otro hilo más con I2C SPI]
 
 = Monitorizar temperatura =
 
