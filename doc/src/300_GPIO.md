@@ -145,7 +145,34 @@ python setup.py install
 
 Y ya podemos probar los ficheros de ejemplo.
 
+### Acceso desde C
 
+La biblioteca de Python *orangepi_PC_gpio_pyH3*, en realidad se basa
+en bibliotecas escritas en C que tenemos disponibles dentro del repo
+en el directorio _pyA20_
+
+~~~~
+cd pyA20
+ls
+gpio/  i2c/  __init__.py  spi/  utilities/
+~~~~
+
+Nos interesa probar las bibliotecas en los directorios _gpio_ e _i2c_,
+al menos de momento. Serían *gpio_lib* e *i2c_lib* respectivamente.
+
+Probamos el acceso al _gpio_ desde C con un programa sencillo que nos
+haga encender y apagar el led de la OPI.
+
+~~~~{c}
+sunxi_gpio_init();
+sunxi_gpio_set_cfgpin(SUNXI_GPA(17), SUNXI_GPIO_OUTPUT);
+while(1) {
+    sunxi_gpio_output(SUNXI_GPA(17), 1);
+    sleep(1);
+    sunxi_gpio_output(SUNXI_GPA(17), 0);
+    sleep(1);
+}
+~~~~
 
 
 ## Referencias

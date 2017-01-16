@@ -243,6 +243,25 @@ Compilamos la biblioteca:
 python setup.py install</pre>
 Y ya podemos probar los ficheros de ejemplo.
 
+=== Acceso desde C ===
+
+La biblioteca de Python ''orangepi_PC_gpio_pyH3'', en realidad se basa en bibliotecas escritas en C que tenemos disponibles dentro del repo en el directorio ''pyA20''
+
+<pre>cd pyA20
+ls
+gpio/  i2c/  __init__.py  spi/  utilities/</pre>
+Nos interesa probar las bibliotecas en los directorios ''gpio'' e ''i2c'', al menos de momento. Serían ''gpio_lib'' e ''i2c_lib'' respectivamente.
+
+Probamos el acceso al ''gpio'' desde C con un programa sencillo que nos haga encender y apagar el led de la OPI.
+
+<pre class="{c}">sunxi_gpio_init();
+sunxi_gpio_set_cfgpin(SUNXI_GPA(17), SUNXI_GPIO_OUTPUT);
+while(1) {
+    sunxi_gpio_output(SUNXI_GPA(17), 1);
+    sleep(1);
+    sunxi_gpio_output(SUNXI_GPA(17), 0);
+    sleep(1);
+}</pre>
 == Referencias ==
 
 * [http://harald.studiokubota.com/wordpress/index.php/2016/11/19/orange-pi-zero-neat/ Probando la Orange Pi Zero]

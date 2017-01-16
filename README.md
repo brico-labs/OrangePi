@@ -65,7 +65,7 @@ Con eso averiguamos la IP asignada a la *Orange Pi Zero* y ya podemos hacer logi
 
 ¡Y ya estamos!
 
-![Primer login en *Orange Pi*](doc/src/img/OrangePiZero_FirstLogin.png)
+![Primer login en *Orange Pi*](src/img/OrangePiZero_FirstLogin.png)
 
 Lo primero es poner al dia el sistema:
 
@@ -118,7 +118,7 @@ Para configurar el wifi echamos un ojo al fichero `/etc/network/interfaces` pero
 
 Así que basta con ejecutar `sudo nwtui` y ya podemos dar de alta nuestra wifi (yo la prefiero con IP estática).
 
-![Configuración WIFI](doc/src/img/OrangePiZero_tmtui.png)
+![Configuración WIFI](src/img/OrangePiZero_tmtui.png)
 
 Ejecutamos `ifconfig` y ya vemos nuestro nuevo interface configurado:
 
@@ -158,7 +158,7 @@ Esquema de pines
 
 Un excelente esquema de pines puede conseguirse en [OSHLab](https://oshlab.com/orange-pi-zero-pinout/)
 
-![Pineado Orange Pi](doc/src/img/Orange-Pi-Zero-Pinout.jpg)
+![Pineado Orange Pi](src/img/Orange-Pi-Zero-Pinout.jpg)
 
 Esquemas eléctricos
 -------------------
@@ -282,6 +282,29 @@ Compilamos la biblioteca:
 
 Y ya podemos probar los ficheros de ejemplo.
 
+### Acceso desde C
+
+La biblioteca de Python *orangepi\_PC\_gpio\_pyH3*, en realidad se basa en bibliotecas escritas en C que tenemos disponibles dentro del repo en el directorio *pyA20*
+
+    cd pyA20
+    ls
+    gpio/  i2c/  __init__.py  spi/  utilities/
+
+Nos interesa probar las bibliotecas en los directorios *gpio* e *i2c*, al menos de momento. Serían *gpio\_lib* e *i2c\_lib* respectivamente.
+
+Probamos el acceso al *gpio* desde C con un programa sencillo que nos haga encender y apagar el led de la OPI.
+
+``` {c}
+sunxi_gpio_init();
+sunxi_gpio_set_cfgpin(SUNXI_GPA(17), SUNXI_GPIO_OUTPUT);
+while(1) {
+    sunxi_gpio_output(SUNXI_GPA(17), 1);
+    sleep(1);
+    sunxi_gpio_output(SUNXI_GPA(17), 0);
+    sleep(1);
+}
+```
+
 Referencias
 -----------
 
@@ -328,7 +351,7 @@ También podemos instalar RPi-Monitor con el comando:
 
 Una vez instalado podemos visitar desde nuestro navegador la dirección ip de nuestra OPI Zero *http://opi-adress:8888* para ver las estadísticas.
 
-![Estadísticas en RPi-Monitor](doc/src/img/rpimonitor.png)
+![Estadísticas en RPi-Monitor](src/img/rpimonitor.png)
 
 ¡Ojo! Las gráficas no se refrescan automáticamente hay que recargar la página.
 
