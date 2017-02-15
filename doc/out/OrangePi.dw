@@ -244,7 +244,9 @@ En el directorio ''%%/sys/class/gpio/gpio15/%%'' tendremos los interfaces usuale
 
 ====== Bibliotecas útiles ======
 
-====== Python ======
+===== Python =====
+
+==== Instalación de virtualenv ====
 
 Para probar bibliotecas de Python instalamos:
 
@@ -253,12 +255,120 @@ sudo aptitude install python-pip
 sudo aptitude install python-virtualenv
 sudo aptitude install python-dev
 </code>
+El caso es que el virtualenv no me funciona después de ejecutar estos pasos. Finalmente he tenido que ejecutar, como //root//, los siguientes comandos:
+
+<code>
+pip install --upgrade pip
+pip install --upgrade virtualenv
+</code>
+Despues de eso ya he podido usar //virtualenv// sin problemas.
+
+==== orangepi_PC_gpio_pyH3 ====
+
+Nos clonamos el repo. Voy a hacer todas las pruebas desde la cuenta de **root**.
+
+<code>
+git clone https://github.com/duxingkei33/orangepi_PC_gpio_pyH3
+</code>
+Hay que cambiar el fichero ''%%orangepi_PC_gpio_pyH3/pyA20/gpio/mapping.h%%''
+
+La definicion de //STATUS_LED// debe quedar en el //GPA17// en lugar de //GPA15//:
+
+<code>
+{   "STATUS_LED",  SUNXI_GPA(17),  2   },
+</code>
+Creamos un entorno para pruebas y lo activamos:
+
+<code>
+virtualenv test_A
+source test_A/bin/activate
+</code>
+Compilamos la biblioteca:
+
+<code>
+cd orangepi_PC_gpio_pyH3
+python setup.py install
+</code>
+Y ya podemos probar los ficheros de ejemplo.
+
+==== Acceso desde C ====
+
+La biblioteca de Python //orangepi_PC_gpio_pyH3//, en realidad se basa en bibliotecas escritas en C que tenemos disponibles dentro del repo en el directorio //pyA20//
+
+<code>
+cd pyA20
+ls
+gpio/  i2c/  __init__.py  spi/  utilities/
+</code>
+Nos interesa probar las bibliotecas en los directorios //gpio// e //i2c//, al menos de momento. Serían //gpio_lib// e //i2c_lib// respectivamente.
+
+Probamos el acceso al //gpio// desde C con un programa sencillo que nos haga encender y apagar el led de la OPI.
+
+<code>
+sunxi_gpio_init();
+sunxi_gpio_set_cfgpin(SUNXI_GPA(17), SUNXI_GPIO_OUTPUT);
+while(1) {
+    sunxi_gpio_output(SUNXI_GPA(17), 1);
+    sleep(1);
+    sunxi_gpio_output(SUNXI_GPA(17), 0);
+    sleep(1);
+}
+</code>
 ===== Referencias =====
 
   * [[http://harald.studiokubota.com/wordpress/index.php/2016/11/19/orange-pi-zero-neat/|Probando la Orange Pi Zero]]
   * [[http://falsinsoft.blogspot.com.es/2012/11/access-gpio-from-linux-user-space.html|GPIO from commandline]]
   * [[http://www.emcraft.com/stm32f429discovery/controlling-gpio-from-linux-user-space|mas de lo mismo]]
+  * [[https://forum.armbian.com/index.php/topic/3084-orange-pi-zero-python-gpio-library/|hilo GPIO en foro]]
+  * [[https://gist.github.com/lanefu/f16a67195c9fa35c466c6b50cdaeadea|WiringPi_OrangePi explicación lanefu]]
+  * [[https://github.com/lanefu/WiringOtherPi|El repo donde pretende unificar WiringPI]]
+  * [[https://github.com/lanefu/WiringPi-Python-OP|Otro Repo mas]]
+  * [[https://gist.github.com/lanefu/f16a67195c9fa35c466c6b50cdaeadea|Otro mas, este tio no para]]
+  * [[https://forum.armbian.com/index.php/topic/2956-559-gpio-support-for-h2h3-boards-with-a-unified-wiringpi-library-in-a-neat-little-package/#entry20311|Hilo en el foro hablando de unificiación de bibliotecas]]
+  * [[https://forum.armbian.com/index.php/topic/3084-orange-pi-zero-python-gpio-library/?hl=%2Bzero+%2Bgpio+%2Blibrary|Otro hilo]]
+  * [[https://forum.armbian.com/index.php/topic/3084-orange-pi-zero-python-gpio-library/|Otro hilo más con I2C SPI]]
 
+====== Monitorizar temperatura ======
+
+Podemos ver estadísticas de nuestra OPI con:
+
+<code>
+sudo armbianmonitor -m
+
+Stop monitoring using [ctrl]-[c]
+Time        CPU    load %cpu %sys %usr %nice %io %irq   CPU
+21:04:18: 1152MHz  0.08   0%   0%   0%   0%   0%   0%   40°C
+21:04:23:  240MHz  0.07   0%   0%   0%   0%   0%   0%   39°C
+21:04:28:  240MHz  0.15   6%   1%   0%   0%   4%   0%   40°C
+21:04:33:  240MHz  0.12   6%   1%   0%   0%   4%   0%   38°C
+21:04:38:  240MHz  0.11   2%   1%   0%   0%   0%   0%   39°C
+21:04:43:  240MHz  0.11   1%   0%   0%   0%   0%   0%   39°C
+21:04:49:  240MHz  0.10   1%   0%   0%   0%   0%   0%   38°C
+21:04:54:  240MHz  0.09   1%   0%   0%   0%   0%   0%   39°C
+21:04:59:  240MHz  0.08   2%   1%   0%   0%   0%   0%   38°C
+21:05:04:  240MHz  0.08   2%   1%   0%   0%   0%   0%   38°C
+21:05:10:  240MHz  0.07   2%   1%   0%   0%   0%   0%   40°C
+21:05:15:  240MHz  0.06   2%   1%   0%   0%   0%   0%   37°C
+21:05:20:  240MHz  0.06   2%   1%   0%   0%   0%   0%   39°C
+21:05:25:  240MHz  0.05   2%   1%   0%   0%   0%   0%   37°C
+21:05:30:  240MHz  0.05   2%   1%   0%   0%   0%   0%   39°C
+</code>
+También podemos instalar RPi-Monitor con el comando:
+
+<code>
+sudo armbianmonitor -r
+</code>
+Una vez instalado podemos visitar desde nuestro navegador la dirección ip de nuestra OPI Zero //http:%%//%%opi-adress:8888// para ver las estadísticas.
+
+{{:src/img/rpimonitor.png| Estadísticas en RPi-Monitor}}
+
+¡Ojo! Las gráficas no se refrescan automáticamente hay que recargar la página.
+
+Para desinstalar el RPi-Monitor basta con:
+
+<code>
+sudo aptitude uninstall rpimonitor
+</code>
 ====== Referencias ======
 
   * [[http://www.orangepi.org/|Página oficial]]

@@ -28,7 +28,7 @@ pdf_opt := --smart --standalone --variable geometry:a4paper --variable lang=$(la
 .PHONY: clean pdf latex mediawiki epub github
 
 # all -- This target try to build every thing
-all: pdf latex mediawiki epub github docx
+all: pdf latex mediawiki dokuwiki epub github docx
 
 # reset -- This target deletes every target and then tries to build everithing
 reset: clean all
