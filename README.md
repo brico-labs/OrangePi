@@ -65,7 +65,7 @@ Con eso averiguamos la IP asignada a la *Orange Pi Zero* y ya podemos hacer logi
 
 ¡Y ya estamos!
 
-![Primer login en *Orange Pi*](src/img/OrangePiZero_FirstLogin.png)
+![Primer login en *Orange Pi*](doc/src/img/OrangePiZero_FirstLogin.png)
 
 Lo primero es poner al dia el sistema:
 
