@@ -167,7 +167,7 @@ aviso:
 # manually.
 ~~~~
 
-Así que basta con ejecutar `sudo nwtui` y ya podemos dar de alta
+Así que basta con ejecutar `sudo nmtui` y ya podemos dar de alta
 nuestra wifi (yo la prefiero con IP estática).
 
 ![Configuración WIFI](src/img/OrangePiZero_tmtui.png)
