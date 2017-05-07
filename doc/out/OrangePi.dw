@@ -57,7 +57,7 @@ Volvemos a insertar la SD en la //Orange Pi// y la conectamos con un cable ether
 Como mi cutre-router no me da información de las IP asignadas usamos //nmap//:
 
 <code>
-nmap -sP 192.168.0.0 /24
+nmap -sP 192.168.0.0/24
 </code>
 Con eso averiguamos la IP asignada a la //Orange Pi Zero// y ya podemos hacer login con el siguiente comando ((La password por defecto de Armbian es **1234**, nos pedirá cambiarla en el primer login.
 )):
@@ -78,7 +78,7 @@ apt-get upgrade
 Si quieres puedes reconfigurar el //time zone//:
 
 <code>
-dpgk-reconfigura tzdata
+dpkg-reconfigure tzdata
 </code>
 ===== Conexión WIFI =====
 
@@ -122,7 +122,7 @@ Para configurar el wifi echamos un ojo al fichero ''%%/etc/network/interfaces%%'
 # and hassles consider using 'sudo nmtui' instead of configuring Wi-Fi settings
 # manually.
 </code>
-Así que basta con ejecutar ''%%sudo nwtui%%'' y ya podemos dar de alta nuestra wifi (yo la prefiero con IP estática).
+Así que basta con ejecutar ''%%sudo nmtui%%'' y ya podemos dar de alta nuestra wifi (yo la prefiero con IP estática).
 
 {{:src/img/OrangePiZero_tmtui.png| Configuración WIFI}}
 

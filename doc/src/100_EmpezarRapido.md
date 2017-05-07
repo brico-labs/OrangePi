@@ -91,7 +91,7 @@ Como mi cutre-router no me da información de las IP asignadas usamos
 _nmap_:
 
 ~~~~
-nmap -sP 192.168.0.0 /24
+nmap -sP 192.168.0.0/24
 ~~~~
 
 Con eso averiguamos la IP asignada a la _Orange Pi Zero_ y ya podemos
@@ -117,7 +117,7 @@ apt-get upgrade
 Si quieres puedes reconfigurar el _time zone_:
 
 ~~~~
-dpgk-reconfigura tzdata
+dpkg-reconfigure tzdata
 ~~~~
 
 ## Conexión WIFI
@@ -167,7 +167,7 @@ aviso:
 # manually.
 ~~~~
 
-Así que basta con ejecutar `sudo nwtui` y ya podemos dar de alta
+Así que basta con ejecutar `sudo nmtui` y ya podemos dar de alta
 nuestra wifi (yo la prefiero con IP estática).
 
 ![Configuración WIFI](src/img/OrangePiZero_tmtui.png)

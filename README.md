@@ -57,7 +57,7 @@ Volvemos a insertar la SD en la *Orange Pi* y la conectamos con un cable etherne
 
 Como mi cutre-router no me da información de las IP asignadas usamos *nmap*:
 
-    nmap -sP 192.168.0.0 /24
+    nmap -sP 192.168.0.0/24
 
 Con eso averiguamos la IP asignada a la *Orange Pi Zero* y ya podemos hacer login con el siguiente comando [1]:
 
@@ -74,7 +74,7 @@ Lo primero es poner al dia el sistema:
 
 Si quieres puedes reconfigurar el *time zone*:
 
-    dpgk-reconfigura tzdata
+    dpkg-reconfigure tzdata
 
 Conexión WIFI
 -------------
@@ -116,7 +116,7 @@ Para configurar el wifi echamos un ojo al fichero `/etc/network/interfaces` pero
     # and hassles consider using 'sudo nmtui' instead of configuring Wi-Fi settings
     # manually.
 
-Así que basta con ejecutar `sudo nwtui` y ya podemos dar de alta nuestra wifi (yo la prefiero con IP estática).
+Así que basta con ejecutar `sudo nmtui` y ya podemos dar de alta nuestra wifi (yo la prefiero con IP estática).
 
 ![Configuración WIFI](doc/src/img/OrangePiZero_tmtui.png)
 
