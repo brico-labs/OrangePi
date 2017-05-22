@@ -101,7 +101,7 @@ sudo aptitude install python-virtualenv
 sudo aptitude install python-dev
 ~~~~
 
-El caso es que el virtualenv no me funciona después de ejecutar estos
+El caso es que el _virtualenv_ no me funciona después de ejecutar estos
 pasos. Finalmente he tenido que ejecutar, como _root_, los siguientes
 comandos:
 
@@ -114,26 +114,39 @@ Despues de eso ya he podido usar _virtualenv_ sin problemas.
 
 ### orangepi_PC_gpio_pyH3
 
-Nos clonamos el repo. Voy a hacer todas las pruebas desde la cuenta de
-__root__.
+Tenemos dos repos disponibles:
+
+El repositorio original con las librerías _gpio_ para H3:
 
 ~~~~
 git clone https://github.com/duxingkei33/orangepi_PC_gpio_pyH3
 ~~~~
 
-Hay que cambiar el fichero `orangepi_PC_gpio_pyH3/pyA20/gpio/mapping.h`
+Y un fork del repositorio original __ya adaptado__ a la Orange Pi Zero
+(que es el que usaremos):
 
-La definicion de *STATUS_LED* debe quedar en el _GPA17_ en lugar de _GPA15_:
+~~~~
+git clone https://github.com/nvl1109/orangepi_PC_gpio_pyH3
+~~~~
+
+__IMPORTANTE:__ Si usamos el repositorio original tenemos que revisar el fichero
+`orangepi_PC_gpio_pyH3/pyA20/gpio/mapping.h`
+
+Por ejemplo: la definicion de *STATUS_LED* debe quedar en el _GPA17_
+en lugar de _GPA15_:
 
 ~~~~
 {   "STATUS_LED",  SUNXI_GPA(17),  2   },
 ~~~~
 
+Nos clonamos el repo. Vamos a hacer todas las pruebas desde la cuenta de
+__root__.
+
 Creamos un entorno para pruebas y lo activamos:
 
 ~~~~
-virtualenv test_A
-source test_A/bin/activate
+virtualenv test_pyH3_zero
+source test_pyH3_zero/bin/activate
 ~~~~
 
 Compilamos la biblioteca:
@@ -143,9 +156,19 @@ cd orangepi_PC_gpio_pyH3
 python setup.py install
 ~~~~
 
-Y ya podemos probar los ficheros de ejemplo.
+Y ya podemos probar los ficheros de ejemplo:
 
-### Acceso desde C
+~~~~
+examples/blink_led.py
+examples/blink_POWER_STATUS_PL10.py
+~~~~
+
+El resto de ejemplos no van a funcionar, están escritos para la
+_A20-OLinuXino-MICRO_
+
+## Acceso desde C
+
+### pyA20
 
 La biblioteca de Python *orangepi_PC_gpio_pyH3*, en realidad se basa
 en bibliotecas escritas en C que tenemos disponibles dentro del repo
@@ -164,6 +187,7 @@ Probamos el acceso al _gpio_ desde C con un programa sencillo que nos
 haga encender y apagar el led de la OPI.
 
 ~~~~{c}
+#include <gpio_lib.h>
 sunxi_gpio_init();
 sunxi_gpio_set_cfgpin(SUNXI_GPA(17), SUNXI_GPIO_OUTPUT);
 while(1) {
@@ -173,6 +197,122 @@ while(1) {
     sleep(1);
 }
 ~~~~
+
+### WiringOP-Zero
+
+Esta biblioteca imita a la _WiringPI_ que se usa con _Raspberry Pi_.
+
+Tenemos un fork que viene preparado para la Orange Pi Zero disponible
+aquí:
+
+~~~~
+https://github.com/xpertsavenue/WiringOP-Zero
+~~~~
+
+GPIO funciona completamente y al parecer aun no han testeado el i2c
+(tiene mala pinta)
+
+Para compilarla seguimos las instrucciones:
+
+~~~~{bash}
+git clone https://github.com/xpertsavenue/WiringOP-Zero
+cd WiringOP-Zero
+chmod +x ./build
+sudo ./build
+~~~~
+
+Podemos comprobar que todo se ha instalado correctamente:
+
+~~~~
+gpio readall
+ +-----+-----+----------+------+--Orange Pi Zero--+---+------+---------+-----+--+
+ | H2+ | wPi |   Name   | Mode | V | Physical | V | Mode | Name     | wPi | H2+ |
+ +-----+-----+----------+------+---+----++----+---+------+----------+-----+-----+
+ |     |     |     3.3v |      |   |  1 || 2  |   |      | 5v       |     |     |
+ |  12 |   8 |    SDA.0 | ALT5 | 0 |  3 || 4  |   |      | 5V       |     |     |
+ |  11 |   9 |    SCL.0 | ALT5 | 0 |  5 || 6  |   |      | 0v       |     |     |
+ |   6 |   7 |   GPIO.7 | ALT3 | 0 |  7 || 8  | 1 | OUT  | TxD3     | 15  | 198 |
+ |     |     |       0v |      |   |  9 || 10 | 0 | ALT5 | RxD3     | 16  | 199 |
+ |   1 |   0 |     RxD2 | ALT5 | 0 | 11 || 12 | 0 | ALT3 | GPIO.1   | 1   | 7   |
+ |   0 |   2 |     TxD2 | ALT5 | 0 | 13 || 14 |   |      | 0v       |     |     |
+ |   3 |   3 |     CTS2 | ALT3 | 0 | 15 || 16 | 0 | ALT4 | GPIO.4   | 4   | 19  |
+ |     |     |     3.3v |      |   | 17 || 18 | 0 | ALT4 | GPIO.5   | 5   | 18  |
+ |  15 |  12 |     MOSI | ALT5 | 0 | 19 || 20 |   |      | 0v       |     |     |
+ |  16 |  13 |     MISO | ALT5 | 0 | 21 || 22 | 0 | ALT3 | RTS2     | 6   | 2   |
+ |  14 |  14 |     SCLK | ALT5 | 0 | 23 || 24 | 0 | ALT5 | CE0      | 10  | 13  |
+ |     |     |       0v |      |   | 25 || 26 | 0 | ALT3 | GPIO.11  | 11  | 10  |
+ +-----+-----+----------+------+---+---LEDs---+---+------+----------+-----+-----+
+ |  17 |  30 | STAT-LED |  OUT | 1 | 27 || 28 |   |      | PWR-LED  |     |     |
+ +-----+-----+----------+------+---+-----+----+---+------+----------+-----+-----+
+ | H2+ | wPi |   Name   | Mode | V | Physical | V | Mode | Name     | wPi | H2+ |
+ +-----+-----+----------+------+--Orange Pi Zero--+---+------+---------+-----+--+
+~~~~
+
+### WiringPI-Python-OP
+
+Una receta para compilar WiringPI-Python-OP
+
+Edited by nopnop2002 at 2017-3-18 22:51
+
+diyer replied at 2017-3-6 06:03
+can someone explain how to map wiringPO on zero plaese?
+
+You can update WiringPi-Python-OP to WiringPi-Python-OP-ZERO.
+
+1.Download [WiringOP libary for the Orange Pi Zero] from here.
+
+https://github.com/xpertsavenue/WiringOP-Zero
+
+2.Download [WiringPi-Python-OP] from here.(But not Install)
+
+https://github.com/lanefu/WiringPi-Python-OP
+
+3.Replace base library
+
+cd WiringPi-Python-OP
+rm -R WiringPi
+cp -R $HOME/WiringOP-Zero ./
+mv WiringOP-Zero WiringPi
+
+4.Build WiringPi-Python-OP-ZERO library
+
+sudo apt-get install python-dev python-setuptools swig
+swig2.0 -python wiringpi.i
+sudo python setup.py install
+cd tests
+sudo python test.py
+
+WiringPi-Python-OP-ZERO have there pin.
+PysPin PinInLib
+1(3.3V)
+2(5V)
+3      8
+4(5V)
+5      9
+6(GND)
+7      7
+8      15
+9(GND)
+10     16
+11     0
+12     1
+13     2
+14(GND)
+15     3
+16     4
+17(3.3V)
+18     5
+19     12
+20(GND)
+21     13
+22     6
+23     14
+24     10
+25(GND)
+26     11
+
+This is same as RPI TYPE A or B
+
 
 
 ## Referencias

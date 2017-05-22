@@ -30,6 +30,18 @@ en [OSHLab](https://oshlab.com/orange-pi-zero-pinout/)
 
 ![Pineado Orange Pi](src/img/Orange-Pi-Zero-Pinout.jpg)
 
+El mapeado de los pines de la Orange (de los micros Allwinner en
+realidad) en el kernel de Linux viene dado por la formula:
+
+~~~~
+(Position of letter in alphabet - 1) * 32 + Pin number
+~~~~
+
+Para todos los pines PA de nuestra Orange Pi Zero, el número del
+kernel coincide con el del pin. Pero para los pines _PG06_ y _PG07_ se
+corresponden con los códigos _198_ y _199_.
+
+
 ## Esquemas eléctricos
 
 Pueden bajarse de [aquí](http://harald.studiokubota.com/wordpress/wp-content/uploads/2016/11/Orange-Pi-Zero-Schanetics-v1_11.pdf)
