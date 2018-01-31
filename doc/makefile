@@ -14,8 +14,8 @@ monofont := 'Ubuntu Mono'
 # for latex and pdf
 documentclass := 'scrartcl'
 
-pdf_opt := --smart --standalone --variable geometry:a4paper --variable lang=$(lang) \
-           --number-sections --toc --from=markdown --to latex --latex-engine=xelatex \
+pdf_opt := -t markdown-smart --standalone --variable geometry:a4paper --variable lang=$(lang) \
+           --number-sections --toc --from=markdown --to latex --pdf-engine=xelatex \
            --variable colorlinks \
            --variable mainfont=$(mainfont) \
            --variable monofont=$(monofont) \
