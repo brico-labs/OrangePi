@@ -248,6 +248,9 @@ gpio readall
  +-----+-----+----------+------+--Orange Pi Zero--+---+------+---------+-----+--+
 ~~~~
 
+Instalamos las i2c-tools `aptitude install i2c-tools`, después de eso
+ya funciona el comando `gpio i2cd`.
+
 ### WiringPI-Python-OP
 
 Una receta para compilar WiringPI-Python-OP
