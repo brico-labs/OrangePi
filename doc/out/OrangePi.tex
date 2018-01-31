@@ -1,3 +1,7 @@
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames*,x11names*}{xcolor}
+%
 \documentclass[12pt,spanish,]{scrartcl}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
@@ -6,12 +10,9 @@
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provides euro and other symbols
 \else % if luatex or xelatex
-  \ifxetex
-    \usepackage{mathspec}
-  \else
-    \usepackage{fontspec}
-  \fi
+  \usepackage{unicode-math}
   \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
     \setmainfont[]{Ubuntu}
     \setmonofont[Mapping=tex-ansi]{Ubuntu Mono}
@@ -20,12 +21,17 @@
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 % use microtype if available
 \IfFileExists{microtype.sty}{%
-\usepackage{microtype}
+\usepackage[]{microtype}
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\usepackage[a4paper]{geometry}
-\usepackage[unicode=true]{hyperref}
-\PassOptionsToPackage{usenames,dvipsnames}{color} % color is loaded by hyperref
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\usepackage{xcolor}
+\usepackage{hyperref}
 \hypersetup{
             pdftitle={Probando la Orange Pi},
             pdfauthor={Luis Llamas lfllamas93@gmail.com; Sergio Alvariño salvari@gmail.com},
@@ -35,12 +41,7 @@
             urlcolor=Blue,
             breaklinks=true}
 \urlstyle{same}  % don't use monospace font for urls
-\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
-  \usepackage[shorthands=off,main=spanish]{babel}
-\else
-  \usepackage{polyglossia}
-  \setmainlanguage[]{spanish}
-\fi
+\usepackage[a4paper]{geometry}
 \usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -50,12 +51,6 @@
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-\IfFileExists{parskip.sty}{%
-\usepackage{parskip}
-}{% else
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt plus 2pt minus 1pt}
-}
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -68,6 +63,19 @@
 \ifx\subparagraph\undefined\else
 \let\oldsubparagraph\subparagraph
 \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[shorthands=off,main=spanish]{babel}
+\else
+  % load polyglossia as late as possible as it *could* call bidi if RTL lang (e.g. Hebrew or Arabic)
+  \usepackage{polyglossia}
+  \setmainlanguage[]{spanish}
 \fi
 
 \title{Probando la Orange Pi}
@@ -89,17 +97,19 @@ TRABAJO EN CURSO NO TERMINADO
 \end{abstract}
 
 {
-\hypersetup{linkcolor=black}
+\hypersetup{linkcolor=}
 \setcounter{tocdepth}{3}
 \tableofcontents
 }
+\hypertarget{empezar-ruxe1pido-desde-linux}{%
 \section{Empezar rápido desde
-linux}\label{empezar-ruxe1pido-desde-linux}
+linux}\label{empezar-ruxe1pido-desde-linux}}
 
 Para usar la Orange Pi Zero tendremos que crear imágenes arrancables en
 tarjetas micro SD.
 
-\subsection{Crear una SD arrancable}\label{crear-una-sd-arrancable}
+\hypertarget{crear-una-sd-arrancable}{%
+\subsection{Crear una SD arrancable}\label{crear-una-sd-arrancable}}
 
 Dependiendo de donde conectemos la tarjeta tendremos que usar diferentes
 rutas. En el procedimiento descrito a continuación \texttt{\$\{card\}}
@@ -205,7 +215,7 @@ ssh root@192.168.0.109
 
 ¡Y ya estamos!
 
-\begin{figure}[htbp]
+\begin{figure}
 \centering
 \includegraphics{src/img/OrangePiZero_FirstLogin.png}
 \caption{Primer login en \emph{Orange Pi}}
@@ -224,7 +234,8 @@ Si quieres puedes reconfigurar el \emph{time zone}:
 dpkg-reconfigure tzdata
 \end{verbatim}
 
-\subsection{Conexión WIFI}\label{conexiuxf3n-wifi}
+\hypertarget{conexiuxf3n-wifi}{%
+\subsection{Conexión WIFI}\label{conexiuxf3n-wifi}}
 
 Vamos a comprobar que todo va bien:
 
@@ -274,7 +285,7 @@ el aviso:
 Así que basta con ejecutar \texttt{sudo\ nmtui} y ya podemos dar de alta
 nuestra wifi (yo la prefiero con IP estática).
 
-\begin{figure}[htbp]
+\begin{figure}
 \centering
 \includegraphics{src/img/OrangePiZero_tmtui.png}
 \caption{Configuración WIFI}
@@ -296,15 +307,17 @@ wlan0     Link encap:Ethernet  HWaddr a4:7c:f2:9a:97:7c
           RX bytes:328 (328.0 B)  TX bytes:852 (852.0 B)
 \end{verbatim}
 
+\hypertarget{orange-pi-zero-caracteruxedsticas-tuxe9cnicas}{%
 \section{Orange Pi Zero, características
-técnicas}\label{orange-pi-zero-caracteruxedsticas-tuxe9cnicas}
+técnicas}\label{orange-pi-zero-caracteruxedsticas-tuxe9cnicas}}
 
 La tarjeta de desarrollo Orange Pi Zero viene equipada con un procesador
 Cortex A7 Allwinner H2+ quad core, con 256 o 512MB RAM, Ethernet, y
 puertos USB. Disponible en Aliexpress (tienda oficial) por 6.99 dolares,
 mas 3.39 dolares como gastos de envío.
 
-\subsection{Especificaciones}\label{especificaciones}
+\hypertarget{especificaciones}{%
+\subsection{Especificaciones}\label{especificaciones}}
 
 \begin{itemize}
 \tightlist
@@ -336,12 +349,13 @@ mas 3.39 dolares como gastos de envío.
   Weight -- 26 grams
 \end{itemize}
 
-\subsection{Esquema de pines}\label{esquema-de-pines}
+\hypertarget{esquema-de-pines}{%
+\subsection{Esquema de pines}\label{esquema-de-pines}}
 
 Un excelente esquema de pines puede conseguirse en
 \href{https://oshlab.com/orange-pi-zero-pinout/}{OSHLab}
 
-\begin{figure}[htbp]
+\begin{figure}
 \centering
 \includegraphics{src/img/Orange-Pi-Zero-Pinout.jpg}
 \caption{Pineado Orange Pi}
@@ -358,13 +372,15 @@ Para todos los pines PA de nuestra Orange Pi Zero, el número del kernel
 coincide con el del pin. Pero para los pines \emph{PG06} y \emph{PG07}
 se corresponden con los códigos \emph{198} y \emph{199}.
 
-\subsection{Esquemas eléctricos}\label{esquemas-eluxe9ctricos}
+\hypertarget{esquemas-eluxe9ctricos}{%
+\subsection{Esquemas eléctricos}\label{esquemas-eluxe9ctricos}}
 
 Pueden bajarse de
 \href{http://harald.studiokubota.com/wordpress/wp-content/uploads/2016/11/Orange-Pi-Zero-Schanetics-v1_11.pdf}{aquí}
 
+\hypertarget{accediendo-al-hardware-desde-linea-de-comandos}{%
 \section{Accediendo al hardware desde linea de
-comandos}\label{accediendo-al-hardware-desde-linea-de-comandos}
+comandos}\label{accediendo-al-hardware-desde-linea-de-comandos}}
 
 La memoria es más que suficiente para correr programas. El Armbian
 consume únicamente 40Mb en funcionamiento.
@@ -391,7 +407,8 @@ bsg    dma      hwmon    leds       mmc_host  rfkill        scsi_host    sunxi_d
 cedar_dev  gpio     i2c-adapter  lirc       net       rtc       sound    sunxi_info  vc
 \end{verbatim}
 
-\subsection{LEDs}\label{leds}
+\hypertarget{leds}{%
+\subsection{LEDs}\label{leds}}
 
 Si miramos dentro del directorio \texttt{leds} veremos que hay un
 directorio que representa cada uno de los leds de la placa:
@@ -418,7 +435,8 @@ O podemos encender el led rojo ejecutando
 ya os podéis imaginar que es
 \texttt{echo\ 0\ \textgreater{}\ red\_led/brightness}.
 
-\subsection{GPIO}\label{gpio}
+\hypertarget{gpio}{%
+\subsection{GPIO}\label{gpio}}
 
 Podemos ver los GPIO disponibles ejecutando:
 
@@ -454,12 +472,15 @@ GPIOs 0-383, platform/sunxi-pinctrl, sunxi-pinctrl:
 En el directorio \texttt{/sys/class/gpio/gpio15/} tendremos los
 interfaces usuales para puertos gpio definidos en el kernel de linux.
 
-\section{Bibliotecas útiles}\label{bibliotecas-uxfatiles}
+\hypertarget{bibliotecas-uxfatiles}{%
+\section{Bibliotecas útiles}\label{bibliotecas-uxfatiles}}
 
-\subsection{Python}\label{python}
+\hypertarget{python}{%
+\subsection{Python}\label{python}}
 
+\hypertarget{instalaciuxf3n-de-virtualenv}{%
 \subsubsection{Instalación de
-virtualenv}\label{instalaciuxf3n-de-virtualenv}
+virtualenv}\label{instalaciuxf3n-de-virtualenv}}
 
 Para probar bibliotecas de Python instalamos:
 
@@ -480,7 +501,8 @@ pip install --upgrade virtualenv
 
 Despues de eso ya he podido usar \emph{virtualenv} sin problemas.
 
-\subsubsection{orangepi\_PC\_gpio\_pyH3}\label{orangepi_pc_gpio_pyh3}
+\hypertarget{orangepi_pc_gpio_pyh3}{%
+\subsubsection{orangepi\_PC\_gpio\_pyH3}\label{orangepi_pc_gpio_pyh3}}
 
 Tenemos dos repos disponibles:
 
@@ -535,9 +557,11 @@ examples/blink_POWER_STATUS_PL10.py
 El resto de ejemplos no van a funcionar, están escritos para la
 \emph{A20-OLinuXino-MICRO}
 
-\subsection{Acceso desde C}\label{acceso-desde-c}
+\hypertarget{acceso-desde-c}{%
+\subsection{Acceso desde C}\label{acceso-desde-c}}
 
-\subsubsection{pyA20}\label{pya20}
+\hypertarget{pya20}{%
+\subsubsection{pyA20}\label{pya20}}
 
 La biblioteca de Python \emph{orangepi\_PC\_gpio\_pyH3}, en realidad se
 basa en bibliotecas escritas en C que tenemos disponibles dentro del
@@ -568,7 +592,8 @@ while(1) {
 }
 \end{verbatim}
 
-\subsubsection{WiringOP-Zero}\label{wiringop-zero}
+\hypertarget{wiringop-zero}{%
+\subsubsection{WiringOP-Zero}\label{wiringop-zero}}
 
 Esta biblioteca imita a la \emph{WiringPI} que se usa con
 \emph{Raspberry Pi}.
@@ -619,7 +644,11 @@ gpio readall
  +-----+-----+----------+------+--Orange Pi Zero--+---+------+---------+-----+--+
 \end{verbatim}
 
-\hypertarget{wiringpi-python-op}{\subsubsection{WiringPI-Python-OP}\label{wiringpi-python-op}}
+Instalamos las i2c-tools \texttt{aptitude\ install\ i2c-tools}, después
+de eso ya funciona el comando \texttt{gpio\ i2cd}.
+
+\hypertarget{wiringpi-python-op}{%
+\subsubsection{WiringPI-Python-OP}\label{wiringpi-python-op}}
 
 Una receta para compilar WiringPI-Python-OP
 
@@ -655,7 +684,8 @@ WiringPi-Python-OP-ZERO have there pin. PysPin PinInLib 1(3.3V) 2(5V) 3
 
 This is same as RPI TYPE A or B
 
-\subsection{Referencias}\label{referencias}
+\hypertarget{referencias}{%
+\subsection{Referencias}\label{referencias}}
 
 \begin{itemize}
 \tightlist
@@ -693,7 +723,44 @@ This is same as RPI TYPE A or B
   hilo más con I2C SPI}
 \end{itemize}
 
-\section{Monitorizar temperatura}\label{monitorizar-temperatura}
+\hypertarget{distribuciones-disponibles-para-orange-pi-zero}{%
+\section{Distribuciones disponibles para Orange Pi
+Zero}\label{distribuciones-disponibles-para-orange-pi-zero}}
+
+\hypertarget{armbian-oficial}{%
+\subsection{Armbian oficial}\label{armbian-oficial}}
+
+En la página oficial de
+\href{https://www.armbian.com/orange-pi-zero/}{Armbian} tenemos dos
+opciones:
+
+\hypertarget{ubuntu-server-legacy-kernel}{%
+\subsubsection{Ubuntu Server (legacy
+kernel)}\label{ubuntu-server-legacy-kernel}}
+
+Es la versión estable
+
+\hypertarget{ubuntu-server-mainline-kernel}{%
+\subsubsection{Ubuntu Server (mainline
+kernel)}\label{ubuntu-server-mainline-kernel}}
+
+Es la versión de desarrollo.
+
+\hypertarget{orange-pi-oficial}{%
+\subsection{Orange Pi oficial}\label{orange-pi-oficial}}
+
+Tiene \href{http://www.orangepi.org/downloadresources/}{varias
+distribuciones}, parece que no esta puesta al dia o bien las fechas no
+son consistentes.
+
+\hypertarget{diet-pi}{%
+\subsection{Diet Pi}\label{diet-pi}}
+
+En \href{http://dietpi.com/}{esta página} parece que hay una versión
+ultraligera.
+
+\hypertarget{monitorizar-temperatura}{%
+\section{Monitorizar temperatura}\label{monitorizar-temperatura}}
 
 Podemos ver estadísticas de nuestra OPI con:
 
@@ -729,7 +796,7 @@ Una vez instalado podemos visitar desde nuestro navegador la dirección
 ip de nuestra OPI Zero \emph{http://opi-adress:8888} para ver las
 estadísticas.
 
-\begin{figure}[htbp]
+\begin{figure}
 \centering
 \includegraphics{src/img/rpimonitor.png}
 \caption{Estadísticas en RPi-Monitor}
@@ -744,7 +811,8 @@ Para desinstalar el RPi-Monitor basta con:
 sudo aptitude uninstall rpimonitor
 \end{verbatim}
 
-\section{Referencias}\label{referencias-1}
+\hypertarget{referencias-1}{%
+\section{Referencias}\label{referencias-1}}
 
 \begin{itemize}
 \tightlist
@@ -789,7 +857,8 @@ sudo aptitude uninstall rpimonitor
   nightly build for H3 is supported
 \end{itemize}
 
-\section{META}\label{meta}
+\hypertarget{meta}{%
+\section{META}\label{meta}}
 
 Este documento está escrito en
 \href{http://pandoc.org/README.html}{Markdown-Pandoc}. Pandoc es un
@@ -830,13 +899,15 @@ $ make reset
 $ make odt
 \end{verbatim}
 
-\subsection{Requisitos}\label{requisitos}
+\hypertarget{requisitos}{%
+\subsection{Requisitos}\label{requisitos}}
 
 Necesitas tener instalaco \textbf{Pandoc}, hay
 \href{https://github.com/brico-labs/pandoc_basico}{una pequeña
 introducción} en el el github de BricoLabs.
 
-\section{Licencia}\label{licencia}
+\hypertarget{licencia}{%
+\section{Licencia}\label{licencia}}
 
 \begin{verbatim}
 

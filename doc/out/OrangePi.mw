@@ -17,7 +17,7 @@ Los datos se pueden almacenar directamente en la memoria SD o en una partición 
 Resumiendo:
 
 * <code>${card}</code> será <code>/dev/sdb</code> o <code>/dev/mmcblk0</code>
-* <math>{card}</math>{p} será <code>/dev/sdb1</code> o <code>/dev/mmcblk0p1</code>
+* <math display="inline">{card}</math>{p} será <code>/dev/sdb1</code> o <code>/dev/mmcblk0p1</code>
 
 Antes de seguir adelante hay que estar completamente seguro del dispositivo asociado a nuestra memoria SD para no armar ningún estropicio.
 
@@ -51,8 +51,7 @@ Volvemos a insertar la SD en la ''Orange Pi'' y la conectamos con un cable ether
 Como mi cutre-router no me da información de las IP asignadas usamos ''nmap'':
 
 <pre>nmap -sP 192.168.0.0/24</pre>
-Con eso averiguamos la IP asignada a la ''Orange Pi Zero'' y ya podemos hacer login con el siguiente comando <ref>La password por defecto de Armbian es '''1234''', nos pedirá cambiarla en el primer login.
-</ref>:
+Con eso averiguamos la IP asignada a la ''Orange Pi Zero'' y ya podemos hacer login con el siguiente comando <ref>La password por defecto de Armbian es '''1234''', nos pedirá cambiarla en el primer login.</ref>:
 
 <pre>ssh root@192.168.0.109</pre>
 ¡Y ya estamos!
@@ -320,6 +319,8 @@ Podemos comprobar que todo se ha instalado correctamente:
  +-----+-----+----------+------+---+-----+----+---+------+----------+-----+-----+
  | H2+ | wPi |   Name   | Mode | V | Physical | V | Mode | Name     | wPi | H2+ |
  +-----+-----+----------+------+--Orange Pi Zero--+---+------+---------+-----+--+</pre>
+Instalamos las i2c-tools <code>aptitude install i2c-tools</code>, después de eso ya funciona el comando <code>gpio i2cd</code>.
+
 === WiringPI-Python-OP ===
 
 Una receta para compilar WiringPI-Python-OP
@@ -363,6 +364,28 @@ This is same as RPI TYPE A or B
 * [https://forum.armbian.com/index.php/topic/2956-559-gpio-support-for-h2h3-boards-with-a-unified-wiringpi-library-in-a-neat-little-package/#entry20311 Hilo en el foro hablando de unificiación de bibliotecas]
 * [https://forum.armbian.com/index.php/topic/3084-orange-pi-zero-python-gpio-library/?hl=%2Bzero+%2Bgpio+%2Blibrary Otro hilo]
 * [https://forum.armbian.com/index.php/topic/3084-orange-pi-zero-python-gpio-library/ Otro hilo más con I2C SPI]
+
+= Distribuciones disponibles para Orange Pi Zero =
+
+== Armbian oficial ==
+
+En la página oficial de [https://www.armbian.com/orange-pi-zero/ Armbian] tenemos dos opciones:
+
+=== Ubuntu Server (legacy kernel) ===
+
+Es la versión estable
+
+=== Ubuntu Server (mainline kernel) ===
+
+Es la versión de desarrollo.
+
+== Orange Pi oficial ==
+
+Tiene [http://www.orangepi.org/downloadresources/ varias distribuciones], parece que no esta puesta al dia o bien las fechas no son consistentes.
+
+== Diet Pi ==
+
+En [http://dietpi.com/ esta página] parece que hay una versión ultraligera.
 
 = Monitorizar temperatura =
 

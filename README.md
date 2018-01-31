@@ -1,33 +1,50 @@
 Empezar rápido desde linux
 ==========================
 
-Para usar la Orange Pi Zero tendremos que crear imágenes arrancables en tarjetas micro SD.
+Para usar la Orange Pi Zero tendremos que crear imágenes arrancables en
+tarjetas micro SD.
 
 Crear una SD arrancable
 -----------------------
 
-Dependiendo de donde conectemos la tarjeta tendremos que usar diferentes rutas. En el procedimiento descrito a continuación `${card}` será la ruta al dispositivo de la tarjeta y ${p} la partición (si la hay).
+Dependiendo de donde conectemos la tarjeta tendremos que usar diferentes
+rutas. En el procedimiento descrito a continuación `${card}` será la
+ruta al dispositivo de la tarjeta y ${p} la partición (si la hay).
 
-Si la tarjeta se conecta via adaptador USB, linux la va a asociar a un dispositivo /dev/sdx, por ejemplo en mi portátil el disco duro es `/dev/sda` las distintas particiones serán `/dev/sda1`, `/devb/sda2`, etc.
+Si la tarjeta se conecta via adaptador USB, linux la va a asociar a un
+dispositivo /dev/sdx, por ejemplo en mi portátil el disco duro es
+`/dev/sda` las distintas particiones serán `/dev/sda1`, `/devb/sda2`,
+etc.
 
-Si conectamos una memoria con un adaptador USB linux la podría mapear en `/dev/sdb` por ejemplo.
+Si conectamos una memoria con un adaptador USB linux la podría mapear en
+`/dev/sdb` por ejemplo.
 
-Si la memoria se conecta mediante una ranura SD, linux la asociará a un dispositivo `/dev/mmcblk0` o `/dev/mmcblk1`, etc. etc. Dependerá de la ranura usada. Las particiones en este tipo de dispositivos tienen rutas como por ejemplo `/dev/mmcblk0p1`.
+Si la memoria se conecta mediante una ranura SD, linux la asociará a un
+dispositivo `/dev/mmcblk0` o `/dev/mmcblk1`, etc. etc. Dependerá de la
+ranura usada. Las particiones en este tipo de dispositivos tienen rutas
+como por ejemplo `/dev/mmcblk0p1`.
 
-Los datos se pueden almacenar directamente en la memoria SD o en una partición creada en la memoria.
+Los datos se pueden almacenar directamente en la memoria SD o en una
+partición creada en la memoria.
 
 Resumiendo:
 
 -   `${card}` será `/dev/sdb` o `/dev/mmcblk0`
 -   *c**a**r**d*{p} será `/dev/sdb1` o `/dev/mmcblk0p1`
 
-Antes de seguir adelante hay que estar completamente seguro del dispositivo asociado a nuestra memoria SD para no armar ningún estropicio.
+Antes de seguir adelante hay que estar completamente seguro del
+dispositivo asociado a nuestra memoria SD para no armar ningún
+estropicio.
 
 Hay varias comprobaciones que se pueden hacer:
 
-`dmesg |tail` nos permitirá echar un ojo a los últimos mensajes en el log del sistema. Si acabamos de insertar la memoria veremos el dispositivo usado.
+`dmesg |tail` nos permitirá echar un ojo a los últimos mensajes en el
+log del sistema. Si acabamos de insertar la memoria veremos el
+dispositivo usado.
 
-`sudo fdisk -l` nos permite ver las particiones montadas en nuestro linux, por ejemplo con mi SD en la ranura SD de mi portatil la salida es (entre otras cosas, he obviado las particiones de los discos duros):
+`sudo fdisk -l` nos permite ver las particiones montadas en nuestro
+linux, por ejemplo con mi SD en la ranura SD de mi portatil la salida es
+(entre otras cosas, he obviado las particiones de los discos duros):
 
 ``` {bash}
 Disk /dev/mmcblk0: 7.4 GiB, 7948206080 bytes, 15523840 sectors
@@ -38,28 +55,40 @@ Disklabel type: dos
 Disk identifier: 0x00000000
 ```
 
-`cat /proc/partitions` también nos dará una lista de particiones, en mi portátil las que interesan son:
+`cat /proc/partitions` también nos dará una lista de particiones, en mi
+portátil las que interesan son:
 
      179        0    7761920 mmcblk0
      179        1    7757824 mmcblk0p1
 
-Descargamos la imagen de Jessie adaptada a la *Orange Pi Zero* desde la página <https://www.armbian.com/download/>
+Descargamos la imagen de Jessie adaptada a la *Orange Pi Zero* desde la
+página <https://www.armbian.com/download/>
 
 Descomprimimos la imagen y la grabamos en la tarjeta SD con el comando:
 
     sudo dd if=./Armbian_5.24_Orangepizero_Debian_jessie_3.4.113.img of=/dev/mmcblk0
 
-Insertamos la tarjeta en la *Orange Pi* y le damos alimentación. El primer arranque llevará alrededor de tres minutos, y tras ese tiempo aun hará falta un minuto más para poder hacer login. Este retardo es debido a que el sistema intentará actualizar la lista de paquetes y creará un area de swap de emergencia en la SD, y además cambiará el tamaño de la partición que hemos creado para ocupar todo el espacio libre en la SD.
+Insertamos la tarjeta en la *Orange Pi* y le damos alimentación. El
+primer arranque llevará alrededor de tres minutos, y tras ese tiempo aun
+hará falta un minuto más para poder hacer login. Este retardo es debido
+a que el sistema intentará actualizar la lista de paquetes y creará un
+area de swap de emergencia en la SD, y además cambiará el tamaño de la
+partición que hemos creado para ocupar todo el espacio libre en la SD.
 
-De momento solo la he arrancado y efectivamente las particiones han cambiado tras el arranque así que tiene buena pinta.
+De momento solo la he arrancado y efectivamente las particiones han
+cambiado tras el arranque así que tiene buena pinta.
 
-Volvemos a insertar la SD en la *Orange Pi* y la conectamos con un cable ethernet al router de casa. El Armbian viene configurado por defecto para obtener su IP desde un servidor DHCP.
+Volvemos a insertar la SD en la *Orange Pi* y la conectamos con un cable
+ethernet al router de casa. El Armbian viene configurado por defecto
+para obtener su IP desde un servidor DHCP.
 
-Como mi cutre-router no me da información de las IP asignadas usamos *nmap*:
+Como mi cutre-router no me da información de las IP asignadas usamos
+*nmap*:
 
     nmap -sP 192.168.0.0/24
 
-Con eso averiguamos la IP asignada a la *Orange Pi Zero* y ya podemos hacer login con el siguiente comando [1]:
+Con eso averiguamos la IP asignada a la *Orange Pi Zero* y ya podemos
+hacer login con el siguiente comando [1]:
 
     ssh root@192.168.0.109
 
@@ -110,13 +139,16 @@ Todo tiene buena pinta, vamos a ver si detecta WIFIs:
                         ESSID:""
                         ESSID:"mikasa"
 
-Para configurar el wifi echamos un ojo al fichero `/etc/network/interfaces` pero en ese mismo fichero encontramos el aviso:
+Para configurar el wifi echamos un ojo al fichero
+`/etc/network/interfaces` pero en ese mismo fichero encontramos el
+aviso:
 
     # Armbian ships with network-manager installed by default. To save you time
     # and hassles consider using 'sudo nmtui' instead of configuring Wi-Fi settings
     # manually.
 
-Así que basta con ejecutar `sudo nmtui` y ya podemos dar de alta nuestra wifi (yo la prefiero con IP estática).
+Así que basta con ejecutar `sudo nmtui` y ya podemos dar de alta nuestra
+wifi (yo la prefiero con IP estática).
 
 ![Configuración WIFI](doc/src/img/OrangePiZero_tmtui.png)
 
@@ -136,17 +168,24 @@ Ejecutamos `ifconfig` y ya vemos nuestro nuevo interface configurado:
 Orange Pi Zero, características técnicas
 ========================================
 
-La tarjeta de desarrollo Orange Pi Zero viene equipada con un procesador Cortex A7 Allwinner H2+ quad core, con 256 o 512MB RAM, Ethernet, y puertos USB. Disponible en Aliexpress (tienda oficial) por 6.99 dolares, mas 3.39 dolares como gastos de envío.
+La tarjeta de desarrollo Orange Pi Zero viene equipada con un procesador
+Cortex A7 Allwinner H2+ quad core, con 256 o 512MB RAM, Ethernet, y
+puertos USB. Disponible en Aliexpress (tienda oficial) por 6.99 dolares,
+mas 3.39 dolares como gastos de envío.
 
 Especificaciones
 ----------------
 
--   SoC – Allwinner H2(+) quad core Cortex A7 processor @ 1.2 GHz with Mali-400MP2 GPU @ 600 MHz
+-   SoC – Allwinner H2(+) quad core Cortex A7 processor @ 1.2 GHz with
+    Mali-400MP2 GPU @ 600 MHz
 -   System Memory – 256 to 512 MB DDR3-1866 SDRAM
 -   Storage – micro SD card slot
--   Connectivity – 10/100M Ethernet + 802.11 b/g/n WiFi (Allwinner XR819 WiFi module) with u.FL antenna connector and external antenna
+-   Connectivity – 10/100M Ethernet + 802.11 b/g/n WiFi (Allwinner XR819
+    WiFi module) with u.FL antenna connector and external antenna
 -   USB – 1x USB 2.0 host ports, 1x micro USB OTG port
--   Expansion headers – Unpopulated 26-pin “Raspberry Pi B+” header + 13-pin header with headphone, 2x USB 2.0, TV out, microphone and IR receiver signals
+-   Expansion headers – Unpopulated 26-pin “Raspberry Pi B+” header +
+    13-pin header with headphone, 2x USB 2.0, TV out, microphone and IR
+    receiver signals
 -   Debugging – Unpopulated 3-pin header for serial console
 -   Misc – 2x LEDs
 -   Power Supply – 5V via micro USB port or optional PoE
@@ -156,25 +195,31 @@ Especificaciones
 Esquema de pines
 ----------------
 
-Un excelente esquema de pines puede conseguirse en [OSHLab](https://oshlab.com/orange-pi-zero-pinout/)
+Un excelente esquema de pines puede conseguirse en
+[OSHLab](https://oshlab.com/orange-pi-zero-pinout/)
 
 ![Pineado Orange Pi](doc/src/img/Orange-Pi-Zero-Pinout.jpg)
 
-El mapeado de los pines de la Orange (de los micros Allwinner en realidad) en el kernel de Linux viene dado por la formula:
+El mapeado de los pines de la Orange (de los micros Allwinner en
+realidad) en el kernel de Linux viene dado por la formula:
 
     (Position of letter in alphabet - 1) * 32 + Pin number
 
-Para todos los pines PA de nuestra Orange Pi Zero, el número del kernel coincide con el del pin. Pero para los pines *PG06* y *PG07* se corresponden con los códigos *198* y *199*.
+Para todos los pines PA de nuestra Orange Pi Zero, el número del kernel
+coincide con el del pin. Pero para los pines *PG06* y *PG07* se
+corresponden con los códigos *198* y *199*.
 
 Esquemas eléctricos
 -------------------
 
-Pueden bajarse de [aquí](http://harald.studiokubota.com/wordpress/wp-content/uploads/2016/11/Orange-Pi-Zero-Schanetics-v1_11.pdf)
+Pueden bajarse de
+[aquí](http://harald.studiokubota.com/wordpress/wp-content/uploads/2016/11/Orange-Pi-Zero-Schanetics-v1_11.pdf)
 
 Accediendo al hardware desde linea de comandos
 ==============================================
 
-La memoria es más que suficiente para correr programas. El Armbian consume únicamente 40Mb en funcionamiento.
+La memoria es más que suficiente para correr programas. El Armbian
+consume únicamente 40Mb en funcionamiento.
 
     root@orangepizero:~# free
                  total       used       free     shared    buffers     cached
@@ -182,7 +227,8 @@ La memoria es más que suficiente para correr programas. El Armbian consume úni
     -/+ buffers/cache:      44844     202224
     Swap:       131068          0     131068
 
-Vamos a hacer algunas pruebas con el hardware. En Armbian, como todo Unix que se precie, todo es un fichero.
+Vamos a hacer algunas pruebas con el hardware. En Armbian, como todo
+Unix que se precie, todo es un fichero.
 
 En el directorio `/sys/class` encontraremos cosas interesantes:
 
@@ -196,20 +242,25 @@ En el directorio `/sys/class` encontraremos cosas interesantes:
 LEDs
 ----
 
-Si miramos dentro del directorio `leds` veremos que hay un directorio que representa cada uno de los leds de la placa:
+Si miramos dentro del directorio `leds` veremos que hay un directorio
+que representa cada uno de los leds de la placa:
 
     root@orangepizero:~# cd /sys/class/leds/
     root@orangepizero:/sys/class/leds# ls
     green_led  red_led
 
-Podemos ver, por ejemplo, a que evento está asociado cada led ejecutando `cat green_led/trigger` (tiene el valor `default_on`) o `cat red_led/trigger` (tiene el valor `none`).
+Podemos ver, por ejemplo, a que evento está asociado cada led ejecutando
+`cat green_led/trigger` (tiene el valor `default_on`) o
+`cat red_led/trigger` (tiene el valor `none`).
 
     root@orangepizero:/sys/class/leds# cat green_led/trigger 
     none mmc0 mmc1 timer heartbeat backlight [default-on] rfkill0 phy1rx phy1tx phy1assoc phy1radio 
     root@orangepizero:/sys/class/leds# cat red_led/trigger 
     [none] mmc0 mmc1 timer heartbeat backlight default-on rfkill0 phy1rx phy1tx phy1assoc phy1radio 
 
-O podemos encender el led rojo ejecutando `echo 1 > red_led/brightness`, y para apagarlo ya os podéis imaginar que es `echo 0 > red_led/brightness`.
+O podemos encender el led rojo ejecutando `echo 1 > red_led/brightness`,
+y para apagarlo ya os podéis imaginar que es
+`echo 0 > red_led/brightness`.
 
 GPIO
 ----
@@ -239,7 +290,8 @@ Ahora veremos el puerto activo:
      gpio-354 (?                   ) out hi
      gpio-362 (green_led           ) out hi
 
-En el directorio `/sys/class/gpio/gpio15/` tendremos los interfaces usuales para puertos gpio definidos en el kernel de linux.
+En el directorio `/sys/class/gpio/gpio15/` tendremos los interfaces
+usuales para puertos gpio definidos en el kernel de linux.
 
 Bibliotecas útiles
 ==================
@@ -257,7 +309,9 @@ sudo aptitude install python-virtualenv
 sudo aptitude install python-dev
 ```
 
-El caso es que el *virtualenv* no me funciona después de ejecutar estos pasos. Finalmente he tenido que ejecutar, como *root*, los siguientes comandos:
+El caso es que el *virtualenv* no me funciona después de ejecutar estos
+pasos. Finalmente he tenido que ejecutar, como *root*, los siguientes
+comandos:
 
     pip install --upgrade pip
     pip install --upgrade virtualenv
@@ -272,17 +326,21 @@ El repositorio original con las librerías *gpio* para H3:
 
     git clone https://github.com/duxingkei33/orangepi_PC_gpio_pyH3
 
-Y un fork del repositorio original **ya adaptado** a la Orange Pi Zero (que es el que usaremos):
+Y un fork del repositorio original **ya adaptado** a la Orange Pi Zero
+(que es el que usaremos):
 
     git clone https://github.com/nvl1109/orangepi_PC_gpio_pyH3
 
-**IMPORTANTE:** Si usamos el repositorio original tenemos que revisar el fichero `orangepi_PC_gpio_pyH3/pyA20/gpio/mapping.h`
+**IMPORTANTE:** Si usamos el repositorio original tenemos que revisar el
+fichero `orangepi_PC_gpio_pyH3/pyA20/gpio/mapping.h`
 
-Por ejemplo: la definicion de *STATUS\_LED* debe quedar en el *GPA17* en lugar de *GPA15*:
+Por ejemplo: la definicion de *STATUS\_LED* debe quedar en el *GPA17* en
+lugar de *GPA15*:
 
     {   "STATUS_LED",  SUNXI_GPA(17),  2   },
 
-Nos clonamos el repo. Vamos a hacer todas las pruebas desde la cuenta de **root**.
+Nos clonamos el repo. Vamos a hacer todas las pruebas desde la cuenta de
+**root**.
 
 Creamos un entorno para pruebas y lo activamos:
 
@@ -299,22 +357,27 @@ Y ya podemos probar los ficheros de ejemplo:
     examples/blink_led.py
     examples/blink_POWER_STATUS_PL10.py
 
-El resto de ejemplos no van a funcionar, están escritos para la *A20-OLinuXino-MICRO*
+El resto de ejemplos no van a funcionar, están escritos para la
+*A20-OLinuXino-MICRO*
 
 Acceso desde C
 --------------
 
 ### pyA20
 
-La biblioteca de Python *orangepi\_PC\_gpio\_pyH3*, en realidad se basa en bibliotecas escritas en C que tenemos disponibles dentro del repo en el directorio *pyA20*
+La biblioteca de Python *orangepi\_PC\_gpio\_pyH3*, en realidad se basa
+en bibliotecas escritas en C que tenemos disponibles dentro del repo en
+el directorio *pyA20*
 
     cd pyA20
     ls
     gpio/  i2c/  __init__.py  spi/  utilities/
 
-Nos interesa probar las bibliotecas en los directorios *gpio* e *i2c*, al menos de momento. Serían *gpio\_lib* e *i2c\_lib* respectivamente.
+Nos interesa probar las bibliotecas en los directorios *gpio* e *i2c*,
+al menos de momento. Serían *gpio\_lib* e *i2c\_lib* respectivamente.
 
-Probamos el acceso al *gpio* desde C con un programa sencillo que nos haga encender y apagar el led de la OPI.
+Probamos el acceso al *gpio* desde C con un programa sencillo que nos
+haga encender y apagar el led de la OPI.
 
 ``` {c}
 #include <gpio_lib.h>
@@ -332,11 +395,13 @@ while(1) {
 
 Esta biblioteca imita a la *WiringPI* que se usa con *Raspberry Pi*.
 
-Tenemos un fork que viene preparado para la Orange Pi Zero disponible aquí:
+Tenemos un fork que viene preparado para la Orange Pi Zero disponible
+aquí:
 
     https://github.com/xpertsavenue/WiringOP-Zero
 
-GPIO funciona completamente y al parecer aun no han testeado el i2c (tiene mala pinta)
+GPIO funciona completamente y al parecer aun no han testeado el i2c
+(tiene mala pinta)
 
 Para compilarla seguimos las instrucciones:
 
@@ -372,13 +437,17 @@ Podemos comprobar que todo se ha instalado correctamente:
      | H2+ | wPi |   Name   | Mode | V | Physical | V | Mode | Name     | wPi | H2+ |
      +-----+-----+----------+------+--Orange Pi Zero--+---+------+---------+-----+--+
 
+Instalamos las i2c-tools `aptitude install i2c-tools`, después de eso ya
+funciona el comando `gpio i2cd`.
+
 ### WiringPI-Python-OP
 
 Una receta para compilar WiringPI-Python-OP
 
 Edited by nopnop2002 at 2017-3-18 22:51
 
-diyer replied at 2017-3-6 06:03 can someone explain how to map wiringPO on zero plaese?
+diyer replied at 2017-3-6 06:03 can someone explain how to map wiringPO
+on zero plaese?
 
 You can update WiringPi-Python-OP to WiringPi-Python-OP-ZERO.
 
@@ -386,36 +455,81 @@ You can update WiringPi-Python-OP to WiringPi-Python-OP-ZERO.
 
 https://github.com/xpertsavenue/WiringOP-Zero
 
-2.Download [WiringPi-Python-OP](#wiringpi-python-op) from here.(But not Install)
+2.Download [WiringPi-Python-OP](#wiringpi-python-op) from here.(But not
+Install)
 
 https://github.com/lanefu/WiringPi-Python-OP
 
 3.Replace base library
 
-cd WiringPi-Python-OP rm -R WiringPi cp -R $HOME/WiringOP-Zero ./ mv WiringOP-Zero WiringPi
+cd WiringPi-Python-OP rm -R WiringPi cp -R $HOME/WiringOP-Zero ./ mv
+WiringOP-Zero WiringPi
 
 4.Build WiringPi-Python-OP-ZERO library
 
-sudo apt-get install python-dev python-setuptools swig swig2.0 -python wiringpi.i sudo python setup.py install cd tests sudo python test.py
+sudo apt-get install python-dev python-setuptools swig swig2.0 -python
+wiringpi.i sudo python setup.py install cd tests sudo python test.py
 
-WiringPi-Python-OP-ZERO have there pin. PysPin PinInLib 1(3.3V) 2(5V) 3 8 4(5V) 5 9 6(GND) 7 7 8 15 9(GND) 10 16 11 0 12 1 13 2 14(GND) 15 3 16 4 17(3.3V) 18 5 19 12 20(GND) 21 13 22 6 23 14 24 10 25(GND) 26 11
+WiringPi-Python-OP-ZERO have there pin. PysPin PinInLib 1(3.3V) 2(5V) 3
+8 4(5V) 5 9 6(GND) 7 7 8 15 9(GND) 10 16 11 0 12 1 13 2 14(GND) 15 3 16
+4 17(3.3V) 18 5 19 12 20(GND) 21 13 22 6 23 14 24 10 25(GND) 26 11
 
 This is same as RPI TYPE A or B
 
 Referencias
 -----------
 
--   [Probando la Orange Pi Zero](http://harald.studiokubota.com/wordpress/index.php/2016/11/19/orange-pi-zero-neat/)
--   [GPIO from commandline](http://falsinsoft.blogspot.com.es/2012/11/access-gpio-from-linux-user-space.html)
--   [mas de lo mismo](http://www.emcraft.com/stm32f429discovery/controlling-gpio-from-linux-user-space)
--   [hilo GPIO en foro](https://forum.armbian.com/index.php/topic/3084-orange-pi-zero-python-gpio-library/)
--   [WiringPi\_OrangePi explicación lanefu](https://gist.github.com/lanefu/f16a67195c9fa35c466c6b50cdaeadea)
--   [El repo donde pretende unificar WiringPI](https://github.com/lanefu/WiringOtherPi)
+-   [Probando la Orange Pi
+    Zero](http://harald.studiokubota.com/wordpress/index.php/2016/11/19/orange-pi-zero-neat/)
+-   [GPIO from
+    commandline](http://falsinsoft.blogspot.com.es/2012/11/access-gpio-from-linux-user-space.html)
+-   [mas de lo
+    mismo](http://www.emcraft.com/stm32f429discovery/controlling-gpio-from-linux-user-space)
+-   [hilo GPIO en
+    foro](https://forum.armbian.com/index.php/topic/3084-orange-pi-zero-python-gpio-library/)
+-   [WiringPi\_OrangePi explicación
+    lanefu](https://gist.github.com/lanefu/f16a67195c9fa35c466c6b50cdaeadea)
+-   [El repo donde pretende unificar
+    WiringPI](https://github.com/lanefu/WiringOtherPi)
 -   [Otro Repo mas](https://github.com/lanefu/WiringPi-Python-OP)
--   [Otro mas, este tio no para](https://gist.github.com/lanefu/f16a67195c9fa35c466c6b50cdaeadea)
--   [Hilo en el foro hablando de unificiación de bibliotecas](https://forum.armbian.com/index.php/topic/2956-559-gpio-support-for-h2h3-boards-with-a-unified-wiringpi-library-in-a-neat-little-package/#entry20311)
--   [Otro hilo](https://forum.armbian.com/index.php/topic/3084-orange-pi-zero-python-gpio-library/?hl=%2Bzero+%2Bgpio+%2Blibrary)
--   [Otro hilo más con I2C SPI](https://forum.armbian.com/index.php/topic/3084-orange-pi-zero-python-gpio-library/)
+-   [Otro mas, este tio no
+    para](https://gist.github.com/lanefu/f16a67195c9fa35c466c6b50cdaeadea)
+-   [Hilo en el foro hablando de unificiación de
+    bibliotecas](https://forum.armbian.com/index.php/topic/2956-559-gpio-support-for-h2h3-boards-with-a-unified-wiringpi-library-in-a-neat-little-package/#entry20311)
+-   [Otro
+    hilo](https://forum.armbian.com/index.php/topic/3084-orange-pi-zero-python-gpio-library/?hl=%2Bzero+%2Bgpio+%2Blibrary)
+-   [Otro hilo más con I2C
+    SPI](https://forum.armbian.com/index.php/topic/3084-orange-pi-zero-python-gpio-library/)
+
+Distribuciones disponibles para Orange Pi Zero
+==============================================
+
+Armbian oficial
+---------------
+
+En la página oficial de
+[Armbian](https://www.armbian.com/orange-pi-zero/) tenemos dos opciones:
+
+### Ubuntu Server (legacy kernel)
+
+Es la versión estable
+
+### Ubuntu Server (mainline kernel)
+
+Es la versión de desarrollo.
+
+Orange Pi oficial
+-----------------
+
+Tiene [varias
+distribuciones](http://www.orangepi.org/downloadresources/), parece que
+no esta puesta al dia o bien las fechas no son consistentes.
+
+Diet Pi
+-------
+
+En [esta página](http://dietpi.com/) parece que hay una versión
+ultraligera.
 
 Monitorizar temperatura
 =======================
@@ -446,11 +560,14 @@ También podemos instalar RPi-Monitor con el comando:
 
     sudo armbianmonitor -r
 
-Una vez instalado podemos visitar desde nuestro navegador la dirección ip de nuestra OPI Zero *http://opi-adress:8888* para ver las estadísticas.
+Una vez instalado podemos visitar desde nuestro navegador la dirección
+ip de nuestra OPI Zero *http://opi-adress:8888* para ver las
+estadísticas.
 
 ![Estadísticas en RPi-Monitor](doc/src/img/rpimonitor.png)
 
-¡Ojo! Las gráficas no se refrescan automáticamente hay que recargar la página.
+¡Ojo! Las gráficas no se refrescan automáticamente hay que recargar la
+página.
 
 Para desinstalar el RPi-Monitor basta con:
 
@@ -460,30 +577,48 @@ Referencias
 ===========
 
 -   [Página oficial](http://www.orangepi.org/)
--   [Recursos oficiales](http://www.orangepi.org/downloadresources/) aquí hay imágenes y los esquemáticos
--   [Tienda en Aliexpress](https://www.aliexpress.com/store/1553371?spm=2114.8147860.0.0.F1q43C)
+-   [Recursos oficiales](http://www.orangepi.org/downloadresources/)
+    aquí hay imágenes y los esquemáticos
+-   [Tienda en
+    Aliexpress](https://www.aliexpress.com/store/1553371?spm=2114.8147860.0.0.F1q43C)
 -   <http://linux-sunxi.org/Bootable_SD_card>
 -   <https://www.armbian.com/orange-pi-zero/>
 -   <https://docs.armbian.com/User-Guide_Getting-Started/>
 -   <https://docs.armbian.com/Hardware_Allwinner/>
--   [GPIO](https://linux-sunxi.org/GPIO) Una explicación de como acceder al gpio desde terminal
--   [Info variada](https://linux-sunxi.org/Orange_Pi_Zero) Aquí tenemos el esquema de pines
--   [GPIO desde el espacio de usuario](https://forum.armbian.com/index.php/topic/1886-gpio-access-from-user-space/)
+-   [GPIO](https://linux-sunxi.org/GPIO) Una explicación de como acceder
+    al gpio desde terminal
+-   [Info variada](https://linux-sunxi.org/Orange_Pi_Zero) Aquí tenemos
+    el esquema de pines
+-   [GPIO desde el espacio de
+    usuario](https://forum.armbian.com/index.php/topic/1886-gpio-access-from-user-space/)
 -   [sunxi-gpio](https://forum.armbian.com/index.php/topic/1471-solved-difficulty-accessing-gpio-via-the-sunxi-gpio-export-interface/)
 -   [orange pi español](http://orangepiweb.es/index.php)
--   [ArchLinux ARM on Orange Pi](https://www.amedeobaragiola.me/blog/2016/06/04/archlinux-arm-on-orange-pi-one/)
--   [Lakka Nightly Builds](http://mirror.lakka.tv/nightly/) Lakka is the official Linux distribution of RetroArch and the libretro ecosystem. Each game system is implemented as a libretro core, while the frontend RetroArch takes care of inputs and display. This clear separation ensures modularity and centralized configuration. Also nightly build for H3 is supported
+-   [ArchLinux ARM on Orange
+    Pi](https://www.amedeobaragiola.me/blog/2016/06/04/archlinux-arm-on-orange-pi-one/)
+-   [Lakka Nightly Builds](http://mirror.lakka.tv/nightly/) Lakka is the
+    official Linux distribution of RetroArch and the libretro ecosystem.
+    Each game system is implemented as a libretro core, while the
+    frontend RetroArch takes care of inputs and display. This clear
+    separation ensures modularity and centralized configuration. Also
+    nightly build for H3 is supported
 
 META
 ====
 
-Este documento está escrito en [Markdown-Pandoc](http://pandoc.org/README.html). Pandoc es un sistema muy sencillo de documentación que permite generar múltiples formatos de salida.
+Este documento está escrito en
+[Markdown-Pandoc](http://pandoc.org/README.html). Pandoc es un sistema
+muy sencillo de documentación que permite generar múltiples formatos de
+salida.
 
-Las fuentes del documento están en el directorio **doc/src** dentro del árbol de directorios del proyecto.
+Las fuentes del documento están en el directorio **doc/src** dentro del
+árbol de directorios del proyecto.
 
-Los formatos de salida son el fichero **README.md** en formato *Markdown-Github* y los documentos que puedes encontrar en el directorio **doc/out** incluyendo un fichero en formato *pdf*.
+Los formatos de salida son el fichero **README.md** en formato
+*Markdown-Github* y los documentos que puedes encontrar en el directorio
+**doc/out** incluyendo un fichero en formato *pdf*.
 
-Los documentos en los distintos formatos de salida se generan automáticamente sin mas que ejecutar:
+Los documentos en los distintos formatos de salida se generan
+automáticamente sin mas que ejecutar:
 
 ``` {bash}
 $ cd doc
@@ -499,7 +634,8 @@ clean
 para borrar todos los fichero de salida
 
 pdf, latex, mediawiki, epub, odt, docx  
-genera el fichero de salida en el formato especificado: pdf, latex, etc. etc.
+genera el fichero de salida en el formato especificado: pdf, latex, etc.
+etc.
 
 Ejemplos:
 
@@ -511,7 +647,9 @@ $ make odt
 Requisitos
 ----------
 
-Necesitas tener instalaco **Pandoc**, hay [una pequeña introducción](https://github.com/brico-labs/pandoc_basico) en el el github de BricoLabs.
+Necesitas tener instalaco **Pandoc**, hay [una pequeña
+introducción](https://github.com/brico-labs/pandoc_basico) en el el
+github de BricoLabs.
 
 Licencia
 ========
@@ -945,4 +1083,5 @@ Licencia
 
     Creative Commons may be contacted at creativecommons.org.
 
-[1] La password por defecto de Armbian es **1234**, nos pedirá cambiarla en el primer login.
+[1] La password por defecto de Armbian es **1234**, nos pedirá cambiarla
+en el primer login.
